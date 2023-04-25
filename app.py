@@ -50,7 +50,7 @@ class Container:
             return "N/A"
 
     def get_status(self):
-        cmd = f"docker ps --format '{{{{.Names}}}}' | grep {name}"
+        cmd = f"docker ps --format '{{{{.Names}}}}' | grep {self.name}"
         try:
             output = subprocess.check_output(cmd, shell=True)
             if output.decode('utf-8').strip() == "":
@@ -58,9 +58,6 @@ class Container:
             return True
         except subprocess.CalledProcessError:
             return False
-
-
-
 
     def start(self):
         cmd = f"docker run -d --rm --name {self.name} {self.image}"
