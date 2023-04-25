@@ -137,6 +137,11 @@ def ws_terminal(ws, container_name):
     return ''
 
 
+@sockets.route('/echo')
+def echo_socket(ws):
+    while True:
+        message = ws.receive()
+        ws.send(message)
 
 vms = {
     'Ubuntu 20.04': VM('ubuntu20', 'ubuntu20.qcow2'),
@@ -214,4 +219,4 @@ def index():
 
 # Define a class for managing VMs
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0', port=5000)
