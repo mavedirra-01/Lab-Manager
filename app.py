@@ -54,7 +54,7 @@ class Container:
         try:
             output = subprocess.check_output(cmd, shell=True)
             return output.decode('utf-8').strip()
-        except subprocess.CalledProcessError:
+        except:
             return "down"
 
     def start(self):
