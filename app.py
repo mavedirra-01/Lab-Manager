@@ -55,7 +55,7 @@ class Container:
             output = subprocess.check_output(cmd, shell=True)
             return output.decode('utf-8').strip()
         except subprocess.CalledProcessError:
-            return "down"
+            return "exited"
 
     def start(self):
         cmd = f"docker run -d --rm --name {self.name} {self.image}"
