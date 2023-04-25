@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 import subprocess
-
+from guacamole.client import GuacamoleClient
+from guacamole.protocol import GuacamoleProtocol
 
 class VM:
     def __init__(self, name, image):
@@ -26,6 +27,44 @@ class VM:
         cmd = f"virsh snapshot-revert {self.name} --current"
         subprocess.run(cmd.split())
         self.start()
+
+class Guacamole:
+    def __init__():
+        @app.route('/connect_to_terminal')
+        def connect_to_terminal():
+            # Connect to the Guacamole server
+            guac_client = GuacamoleClient('localhost', 8080, 'osi', 'osi')
+
+            # Create a new Guacamole connection for the terminal
+            connection = guac_client.create_connection(protocol=GuacamoleProtocol.RDP)
+            connection.parameters['hostname'] = 'localhost'
+            connection.parameters['port'] = '22'
+            connection.parameters['password'] = 'osi'
+
+            # Start the Guacamole session and get the session URL
+            session_url = guac_client.get_session_url(connection)
+
+            # Return the session URL to the client
+            return session_url
+
+
+        @app.route('/connect_to_spice')
+        def connect_to_spice():
+            # Connect to the Guacamole server
+            guac_client = GuacamoleClient('localhost', 8080, 'guacuser', 'guacpass')
+
+            # Create a new Guacamole connection for the Spice
+            connection = guac_client.create_connection(
+                protocol=GuacamoleProtocol.SPICE)
+            connection.parameters['hostname'] = 'localhost'
+            connection.parameters['port'] = '5900'
+            connection.parameters['password'] = 'spicepassword'
+
+            # Start the Guacamole session and get the session URL
+            session_url = guac_client.get_session_url(connection)
+
+            # Return the session URL to the client
+            return session_url
 
 
 class Container:

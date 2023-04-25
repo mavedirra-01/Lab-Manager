@@ -163,6 +163,14 @@
                     </form>
                     {% endif %}
                 </td>
+                <td>
+                    <form action="{{ url_for('connect_terminal', container_name=name) }}" method="POST">
+                        <button class="terminal-icon" type="submit"></button>
+                    </form>
+                    <form action="{{ url_for('connect_spice', container_name=name) }}" method="POST">
+                        <button class="spice-icon" type="submit"></button>
+                    </form>
+                </td>
             </tr>
             {% endfor %}
         </table>
