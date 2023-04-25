@@ -38,7 +38,7 @@ class Container:
     def __init__(self, name, image):
         self.name = name
         self.id = self.get_id()
-        # self.status = self.get_status()
+        self.status = self.get_status()
         self.image = image
 
     def get_id(self):
@@ -49,13 +49,13 @@ class Container:
         except subprocess.CalledProcessError:
             return "N/A"
 
-    # def get_status(self):
-    #     cmd = f"docker inspect --format='{{{{.State.Status}}}}' {self.name}"
-    #     try:
-    #         output = subprocess.check_output(cmd, shell=True)
-    #         return output.decode('utf-8').strip()
-    #     except subprocess.CalledProcessError:
-    #         return "down"
+    def get_status(self):
+        cmd = f"docker inspect --format='{{{{.State.Status}}}}' {self.name}"
+        try:
+            output = subprocess.check_output(cmd, shell=True)
+            return output.decode('utf-8').strip()
+        except subprocess.CalledProcessError:
+            return "down"
 
     def start(self):
         cmd = f"docker run -d --rm --name {self.name} {self.image}"
@@ -150,7 +150,7 @@ def index():
     for name, container in containers.items():
         containers_status[name] = {
             'id': container.id,
-            # 'status': container.get_status()
+            'status': container.get_status()
         }
     return render_template('index.html', vms=vms_status, containers=containers_status)
 
