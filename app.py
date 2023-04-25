@@ -6,7 +6,6 @@ class VM:
     def __init__(self, name, image):
         self.name = name
         self.image = image
-        self.id = self.get_id()
         self.state = self.get_state()
 
     def get_state(self):
