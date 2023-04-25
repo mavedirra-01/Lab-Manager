@@ -54,9 +54,9 @@ class Container:
         try:
             output = subprocess.check_output(cmd, shell=True)
             return output.decode('utf-8').strip()
-        except subprocess.CalledProcessError as e:
+        except output as e:
             a = e.output.decode('utf-8')
-            print("here:", output)
+            print("here:")
             # Ignore the error message and return "exited" if container is not running
             if "template parsing error" in e.output.decode('utf-8'):
                 return "exited"
