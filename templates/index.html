@@ -143,14 +143,14 @@
             <tr>
                 <th>Name</th>
                 <th>ID</th>
-                <th>State</th>
+                <th>Status</th>
                 <th>Action</th>
             </tr>
             {% for name, container in containers.items() %}
             <tr>
                 <td>{{ name }}</td>
                 <td>{{ container.id }}</td>
-                <td>{{ container.state }}</td>
+                <td>{{ container.status }}</td>
                 <td>
                     {% if container.status == 'exited' %}
                     <form action="{{ url_for('start_container', container_name=name) }}" method="POST">
