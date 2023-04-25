@@ -101,7 +101,7 @@ app = Flask(__name__)
 sockets = Sockets(app)
 
 
-@sockets.route('/ws/terminal/<container_name>')
+@sockets.route('/ws/terminal/<container_name>', endpoint='ws_terminal')
 def ws_terminal(ws, container_name):
     cmd = f"docker exec -it {container_name} /bin/bash"
     proc = subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE,
