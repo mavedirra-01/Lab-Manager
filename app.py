@@ -54,8 +54,13 @@ class Container:
         try:
             output = subprocess.check_output(cmd, shell=True)
             return output.decode('utf-8').strip()
-        except subprocess.CalledProcessError:
-            return "exited"
+        except subprocess.CalledProcessError as e:
+            # Ignore the error message and return "exited" if container is not running
+            if "No such object" in e.output.decode('utf-8'):
+                return "exited"
+            else:
+                raise e
+
 
     def start(self):
         cmd = f"docker run -d --rm --name {self.name} {self.image}"
