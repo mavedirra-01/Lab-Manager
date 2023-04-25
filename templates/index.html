@@ -151,7 +151,7 @@
                 <td>{{ name }}</td>
                 <td>
                     {% if container is not none %}
-                    {{ container.id }}
+                        {{ container.id }}
                     {% elif check_container_exists(name) %}
                         Not running
                     {% else %}

@@ -62,7 +62,7 @@ class Container:
         subprocess.run(cmd.split())
 
     def stop(self):
-        cmd = f"docker stop {self.name} && docker remove {self.name}"
+        cmd = f"docker stop {self.name}"
         subprocess.run(cmd.split())
 
     def reset(self):
