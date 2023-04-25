@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from flask_sockets import Sockets
+import Sockets
 import subprocess
 # from guacamole.client import GuacamoleClient
 # from guacamole.protocol import GuacamoleProtocol
