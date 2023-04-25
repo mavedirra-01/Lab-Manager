@@ -59,6 +59,7 @@ class Container:
             if "returned non-zero exit status 1" in e.output.decode('utf-8'):
                 return "exited"
             else:
+                status = "Not running"
                 return "exited"
 
 
