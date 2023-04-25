@@ -54,8 +54,8 @@ class Container:
         try:
             output = subprocess.check_output(cmd, shell=True)
             if output.decode('utf-8').strip() == "":
+                print('hello world')
                 return "not started"
-            return True
         except subprocess.CalledProcessError:
             return False
 
