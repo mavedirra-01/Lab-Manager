@@ -101,7 +101,7 @@ app = Flask(__name__)
 sockets = Sockets(app)
 
 
-@sockets.route('/ws/terminal/<container_name>', endpoint='ws_terminal')
+@sockets.route('/ws/terminal/<container_name>', endpoint='terminal')
 def ws_terminal(ws, container_name):
     cmd = f"docker exec -it {container_name} /bin/bash"
     proc = subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE,
@@ -121,13 +121,20 @@ def ws_terminal(ws, container_name):
     input_thread = threading.Thread(target=read_input)
     input_thread.start()
 
-    while True:
+    while proc.poll() is None:
         output = proc.stdout.readline().decode()
-        if output == '' and proc.poll() is not None:
-            break
         send_output(output)
 
+    # Send remaining output from the subprocess
+    for output in proc.stdout.readlines():
+        send_output(output.decode())
+
+    # Close the WebSocket connection
+    ws.close()
     input_thread.join()
+
+    return ''
+
 
 
 vms = {
