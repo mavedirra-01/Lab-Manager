@@ -149,9 +149,24 @@
             {% for name, container in containers.items() %}
             <tr>
                 <td>{{ name }}</td>
-                <td>{{ container.id }}</td>
-                <td>{{ container.state }}</td>
                 <td>
+                    {% if container is not none %}
+                    {{ container.id }}
+                    {% elif check_container_exists(name) %}
+                        Not running
+                    {% else %}
+                        Not created
+                    {% endif %}
+                </td>
+                <td>
+                    {% if container is not none %}
+                        {{ container.state }}
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
+                <td>
+                    {% if container is not none %}
                     {% if container.status == 'exited' %}
                     <form action="{{ url_for('start_container', container_name=name) }}" method="POST">
                         <button class="start-icon" type="submit"></button>
@@ -162,6 +177,11 @@
                     </form>
                     <form action="{{ url_for('reset_container', container_name=name) }}" method="POST">
                         <button class="reset-icon" type="submit"></button>
+                    </form>
+                    {% endif %}
+                    {% else %}
+                    <form action="{{ url_for('create_container', container_name=name) }}" method="POST">
+                        <button class="start-icon" type="submit"></button>
                     </form>
                     {% endif %}
                 </td>
