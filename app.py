@@ -73,11 +73,11 @@ class Container:
 
     def check_container_exists(name):
         cmd = f"docker ps --format '{{{{.Names}}}}' | grep {name}"
-    try:
-        subprocess.check_output(cmd, shell=True)
-        return True
-    except subprocess.CalledProcessError:
-        return False
+        try:
+            subprocess.check_output(cmd, shell=True)
+            return True
+        except subprocess.CalledProcessError:
+            return False
 
 
 
