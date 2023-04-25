@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Terminal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='xterm.css') }}">
+    <script src="{{ url_for('static', filename='xterm.js') }}"></script>
+    <script src="{{ url_for('static', filename='fit.js') }}"></script>
+    <style>
+        #terminal {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="terminal"></div>
+    <script>
+    var term = new Terminal();
+    term.open(document.getElementById('terminal'));
+    fit(term);
+
+    var wsURL = 'ws://' + location.host + '/ws/terminal/{{ container_name }}';
+    var socket = new WebSocket(wsURL);
+
+    socket.addEventListener('open', function (event) {
+      console.log('WebSocket connection established');
+      term.write('Connected to terminal\n\r');
+    });
+
+    socket.addEventListener('message', function (event) {
+      term.write(event.data);
+    });
+
+    socket.addEventListener('close', function (event) {
+      console.log('WebSocket connection closed');
+      term.write('Disconnected from terminal\n\r');
+    });
+
+    term.onData(function (data) {
+      socket.send(data);
+    });
+    </script>
+</body>
+
+</html>

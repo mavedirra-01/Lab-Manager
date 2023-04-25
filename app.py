@@ -28,43 +28,43 @@ class VM:
         subprocess.run(cmd.split())
         self.start()
 
-class Guacamole:
-    def __init__():
-        @app.route('/connect_to_terminal')
-        def connect_to_terminal():
-            # Connect to the Guacamole server
-            guac_client = GuacamoleClient('localhost', 8080, 'osi', 'osi')
+# class Guacamole:
+#     def __init__():
+#         @app.route('/connect_to_terminal')
+#         def connect_to_terminal():
+#             # Connect to the Guacamole server
+#             guac_client = GuacamoleClient('localhost', 8080, 'osi', 'osi')
 
-            # Create a new Guacamole connection for the terminal
-            connection = guac_client.create_connection(protocol=GuacamoleProtocol.RDP)
-            connection.parameters['hostname'] = 'localhost'
-            connection.parameters['port'] = '22'
-            connection.parameters['password'] = 'osi'
+#             # Create a new Guacamole connection for the terminal
+#             connection = guac_client.create_connection(protocol=GuacamoleProtocol.RDP)
+#             connection.parameters['hostname'] = 'localhost'
+#             connection.parameters['port'] = '22'
+#             connection.parameters['password'] = 'osi'
 
-            # Start the Guacamole session and get the session URL
-            session_url = guac_client.get_session_url(connection)
+#             # Start the Guacamole session and get the session URL
+#             session_url = guac_client.get_session_url(connection)
 
-            # Return the session URL to the client
-            return session_url
+#             # Return the session URL to the client
+#             return session_url
 
 
-        @app.route('/connect_to_spice')
-        def connect_to_spice():
-            # Connect to the Guacamole server
-            guac_client = GuacamoleClient('localhost', 8080, 'guacuser', 'guacpass')
+#         @app.route('/connect_to_spice')
+#         def connect_to_spice():
+#             # Connect to the Guacamole server
+#             guac_client = GuacamoleClient('localhost', 8080, 'osi', 'osi')
 
-            # Create a new Guacamole connection for the Spice
-            connection = guac_client.create_connection(
-                protocol=GuacamoleProtocol.SPICE)
-            connection.parameters['hostname'] = 'localhost'
-            connection.parameters['port'] = '5900'
-            connection.parameters['password'] = 'spicepassword'
+#             # Create a new Guacamole connection for the Spice
+#             connection = guac_client.create_connection(
+#                 protocol=GuacamoleProtocol.SPICE)
+#             connection.parameters['hostname'] = 'localhost'
+#             connection.parameters['port'] = '5900'
+#             connection.parameters['password'] = 'spicepassword'
 
-            # Start the Guacamole session and get the session URL
-            session_url = guac_client.get_session_url(connection)
+#             # Start the Guacamole session and get the session URL
+#             session_url = guac_client.get_session_url(connection)
 
-            # Return the session URL to the client
-            return session_url
+#             # Return the session URL to the client
+#             return session_url
 
 
 class Container:
@@ -97,6 +97,37 @@ class Container:
 
 
 app = Flask(__name__)
+sockets = Sockets(app)
+
+
+@sockets.route('/ws/terminal/<container_name>')
+def ws_terminal(ws, container_name):
+    cmd = f"docker exec -it {container_name} /bin/bash"
+    proc = subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE,
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+    def send_output(output):
+        ws.send(output.encode())
+
+    def read_input():
+        while True:
+            data = ws.receive()
+            if data is None:
+                break
+            proc.stdin.write(data.encode())
+            proc.stdin.flush()
+
+    input_thread = threading.Thread(target=read_input)
+    input_thread.start()
+
+    while True:
+        output = proc.stdout.readline().decode()
+        if output == '' and proc.poll() is not None:
+            break
+        send_output(output)
+
+    input_thread.join()
+
 
 vms = {
     'Ubuntu 20.04': VM('ubuntu20', 'ubuntu20.qcow2'),
@@ -151,6 +182,10 @@ def reset_container(container_name):
         containers[container_name].reset()
     return redirect(url_for('index'))
 
+
+@app.route('/terminal/<container_name>')
+def terminal(container_name):
+    return render_template('terminal.html', container_name=container_name)
 
 # Define route for displaying the main page
 @app.route('/')
