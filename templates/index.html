@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Virtual Machines and Containers Manager</title>
+    <style>
+        body {
+            background-color: #333;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 40px 0;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 30px 0;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th {
+            background-color: #222;
+            border: 1px solid #555;
+            font-weight: bold;
+            padding: 10px;
+            text-align: left;
+        }
+
+        td {
+            border: 1px solid #555;
+            padding: 10px;
+        }
+
+        td button {
+            background-color: #222;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 5px 10px;
+        }
+
+        td button:hover {
+            background-color: #444;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #111;
+            padding: 20px;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #111;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .logo {
+            height: 50px;
+            width: auto;
+            margin-right: 20px;
+        }
+
+        .container {
+            margin-top: 150px;
+        }
+
+        .action-icons {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .action-icons button {
+            margin-left: 10px;
+        }
+
+        .start-icon:before {
+            content: '\25B6';
+        }
+
+        .stop-icon:before {
+            content: '\25A0';
+        }
+
+        .reset-icon:before {
+            content: '\27F2';
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>Virtual Machines and Containers Manager</h1>
+    </div>
+    <div class="container">
+        <h2>Virtual Machines</h2>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>ID</th>
+                <th>State</th>
+                <th>Action</th>
+            </tr>
+            {% for name, vm in vms.items() %}
+            <tr>
+                <td>{{ name }}</td>
+                <td>{{ vm.id }}</td>
+                <td>{{ vm.state }}</td>
+                <td>
+                    {% if vm.state == 'shut' %}
+                    <form action="{{ url_for('start_vm', vm_name=name) }}" method="POST">
+                        <button type="submit">Start</button>
+                    </form>
+                    {% elif vm.state == 'running' %}
+                    <form action="{{ url_for('stop_vm', vm_name=name) }}" method="POST">
+                        <button class="stop-icon" type="submit"></button>
+                    </form>
+                    <form action="{{ url_for('reset_vm', vm_name=name) }}" method="POST">
+                        <button class="reset-icon" type="submit"></button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <h2>Docker Containers</h2>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>ID</th>
+                <th>State</th>
+                <th>Action</th>
+            </tr>
+            {% for name, container in containers.items() %}
+            <tr>
+                <td>{{ name }}</td>
+                <td>{{ container.id }}</td>
+                <td>{{ container.state }}</td>
+                <td>
+                    {% if container.status == 'exited' %}
+                    <form action="{{ url_for('start_container', container_name=name) }}" method="POST">
+                        <button class="start-icon" type="submit"></button>
+                    </form>
+                    {% elif container.status == 'running' %}
+                    <form action="{{ url_for('stop_container', container_name=name) }}" method="POST">
+                        <button class="stop-icon" type="submit"></button>
+                    </form>
+                    <form action="{{ url_for('reset_container', container_name=name) }}" method="POST">
+                        <button class="reset-icon" type="submit"></button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+</body>
+</html>
