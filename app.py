@@ -58,6 +58,8 @@ class Container:
             # Ignore the error message and return "exited" if container is not running
             if "returned non-zero exit status 1" in e.output.decode('utf-8'):
                 return "exited"
+            else:
+                return "exited"
 
 
     def start(self):
