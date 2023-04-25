@@ -26,25 +26,27 @@
     fit(term);
 
     var wsURL = 'ws://' + location.host + '/ws/terminal/{{ container_name }}';
-    var socket = new WebSocket(wsURL);
+        console.log('Connecting to WebSocket at', wsURL);
+        var socket = new WebSocket(wsURL);
 
-    socket.addEventListener('open', function (event) {
-      console.log('WebSocket connection established');
-      term.write('Connected to terminal\n\r');
-    });
+        socket.addEventListener('open', function (event) {
+            console.log('WebSocket connection established');
+            term.write('Connected to terminal\n\r');
+        });
 
-    socket.addEventListener('message', function (event) {
-      term.write(event.data);
-    });
+        socket.addEventListener('error', function (event) {
+            console.error('WebSocket error', event);
+        });
 
-    socket.addEventListener('close', function (event) {
-      console.log('WebSocket connection closed');
-      term.write('Disconnected from terminal\n\r');
-    });
+        socket.addEventListener('message', function (event) {
+            term.write(event.data);
+        });
 
-    term.onData(function (data) {
-      socket.send(data);
-    });
+        socket.addEventListener('close', function (event) {
+            console.log('WebSocket connection closed');
+            term.write('Disconnected from terminal\n\r');
+        });
+
     </script>
 </body>
 
