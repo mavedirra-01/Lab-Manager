@@ -70,6 +70,13 @@
             text-align: center;
         }
 
+        .terminal-icon {
+          font-size: 24px;
+          width: 48px;
+          height: 48px;
+        }
+
+
         .logo {
             height: 50px;
             width: auto;
@@ -164,7 +171,7 @@
                     {% endif %}
                 </td>
                 <td>
-                    <form action="{{ url_for('terminal', container_name=name).replace('http', 'ws') }}" method="POST">
+                    <form action="{{ url_for('terminal', container_name=name).replace('http', 'ws') }}" method="GET">
                         <button class="terminal-icon" type="submit"></button>
                     </form>
                     </form>
