@@ -49,14 +49,13 @@ class Container:
         except subprocess.CalledProcessError:
             return "N/A"
 
-    def get_status(self):
-        cmd = f"docker inspect --format='{{{{.State.Status}}}}' {self.name}"
-        try:
-            output = subprocess.check_output(cmd, shell=True)
-            return output.decode('utf-8').strip()
-        except subprocess.CalledProcessError:
-            print("hello world")
-            return "down"
+    # def get_status(self):
+    #     cmd = f"docker inspect --format='{{{{.State.Status}}}}' {self.name}"
+    #     try:
+    #         output = subprocess.check_output(cmd, shell=True)
+    #         return output.decode('utf-8').strip()
+    #     except subprocess.CalledProcessError:
+    #         return "down"
 
     def start(self):
         cmd = f"docker run -d --rm --name {self.name} {self.image}"
