@@ -53,10 +53,8 @@ class Container:
         cmd = f"docker ps --format '{{{{.Names}}}}' | grep {self.name}"
         try:
             output = subprocess.check_output(cmd, shell=True)
-            if output.decode('utf-8').strip() == "":
-                return "not started"
         except subprocess.CalledProcessError:
-            return False
+            return "Not started"
 
     def start(self):
         cmd = f"docker run -d --rm --name {self.name} {self.image}"
