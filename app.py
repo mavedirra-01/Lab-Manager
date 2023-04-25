@@ -38,7 +38,7 @@ class Container:
     def __init__(self, name, image):
         self.name = name
         self.id = self.get_id()
-        self.status = self.get_status()
+        # self.status = self.get_status()
         self.image = image
 
     def get_id(self):
@@ -150,7 +150,7 @@ def index():
     for name, container in containers.items():
         containers_status[name] = {
             'id': container.id,
-            'status': container.get_status()
+            # 'status': container.get_status()
         }
     return render_template('index.html', vms=vms_status, containers=containers_status)
 
