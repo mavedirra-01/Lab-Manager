@@ -9,11 +9,6 @@ class VM:
         self.id = self.get_id()
         self.state = self.get_state()
 
-    def get_id(self):
-        cmd = f"virsh list --all | grep {self.name} | awk '{{print $1}}'"
-        output = subprocess.check_output(cmd, shell=True)
-        return output.decode('utf-8').strip()
-
     def get_state(self):
         cmd = f"virsh list --all | grep {self.name} | awk '{{print $3}}'"
         output = subprocess.check_output(cmd, shell=True)
@@ -37,17 +32,8 @@ class VM:
 class Container:
     def __init__(self, name, image):
         self.name = name
-        self.id = self.get_id()
         self.status = self.get_status()
         self.image = image
-
-    def get_id(self):
-        cmd = f"docker ps -aqf name={self.name}"
-        try:
-            output = subprocess.check_output(cmd, shell=True)
-            return output.decode('utf-8').strip()
-        except subprocess.CalledProcessError:
-            return "N/A"
 
     def get_status(self):
         cmd = f"docker ps --format '{{{{.Names}}}}' | grep {self.name}"
@@ -134,13 +120,11 @@ def index():
     vms_status = {}
     for name, vm in vms.items():
         vms_status[name] = {
-            'id': vm.id,
             'state': vm.get_state()
         }
     containers_status = {}
     for name, container in containers.items():
         containers_status[name] = {
-            'id': container.id,
             'status': container.get_status()
         }
     return render_template('index.html', vms=vms_status, containers=containers_status)
