@@ -53,7 +53,7 @@ class Container:
         cmd = f"docker ps --format '{{{{.Names}}}}' | grep {self.name}"
         try:
             output = subprocess.check_output(cmd, shell=True)
-            return "running"
+            return "Running"
         except subprocess.CalledProcessError:
             return "Not started"
 
