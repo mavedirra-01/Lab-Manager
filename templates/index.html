@@ -167,22 +167,18 @@
                 </td>
                 <td>
                     {% if container is not none %}
-                    {% if container.status == 'exited' %}
-                    <form action="{{ url_for('start_container', container_name=name) }}" method="POST">
-                        <button class="start-icon" type="submit"></button>
-                    </form>
-                    {% elif container.status == 'running' %}
-                    <form action="{{ url_for('stop_container', container_name=name) }}" method="POST">
-                        <button class="stop-icon" type="submit"></button>
-                    </form>
-                    <form action="{{ url_for('reset_container', container_name=name) }}" method="POST">
-                        <button class="reset-icon" type="submit"></button>
-                    </form>
-                    {% endif %}
-                    {% else %}
-                    <form action="{{ url_for('create_container', container_name=name) }}" method="POST">
-                        <button class="start-icon" type="submit"></button>
-                    </form>
+                        {% if container.status == 'exited' %}
+                        <form action="{{ url_for('start_container', container_name=name) }}" method="POST">
+                            <button class="start-icon" type="submit"></button>
+                        </form>
+                        {% elif container.status == 'running' %}
+                        <form action="{{ url_for('stop_container', container_name=name) }}" method="POST">
+                            <button class="stop-icon" type="submit"></button>
+                        </form>
+                        <form action="{{ url_for('reset_container', container_name=name) }}" method="POST">
+                            <button class="reset-icon" type="submit"></button>
+                        </form>
+                        {% endif %}
                     {% endif %}
                 </td>
             </tr>
