@@ -148,7 +148,6 @@
             {% for name, container in containers.items() %}
             <tr>
                 <td>{{ name }}</td>
-                <td>{{ container.id }}</td>
                 <td>{{ container.status }}</td>
                 <td>
                     {% if container.status == 'Not started' %}
