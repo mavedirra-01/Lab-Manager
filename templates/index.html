@@ -167,7 +167,7 @@
                 </td>
                 <td>
                     {% if container is not none %}
-                        {% if container.status == 'exited' %}
+
                         <form action="{{ url_for('start_container', container_name=name) }}" method="POST">
                             <button class="start-icon" type="submit"></button>
                         </form>
