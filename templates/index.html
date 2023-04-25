@@ -167,11 +167,10 @@
                 </td>
                 <td>
                     {% if container is not none %}
-
                         <form action="{{ url_for('start_container', container_name=name) }}" method="POST">
                             <button class="start-icon" type="submit"></button>
                         </form>
-                        {% elif container.status == 'running' %}
+                        {% if container.status == 'running' %}
                         <form action="{{ url_for('stop_container', container_name=name) }}" method="POST">
                             <button class="stop-icon" type="submit"></button>
                         </form>
