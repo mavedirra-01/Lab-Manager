@@ -21,21 +21,18 @@
 <body>
     <div id="terminal"></div>
     <script>
-    var term = new Terminal();
-    term.open(document.getElementById('terminal'));
-    fit(term);
+        var term = new Terminal();
+        term.open(document.getElementById('terminal'));
 
-    var wsURL = 'ws://' + location.host + '/ws/terminal/{{ container_name }}';
-        console.log('Connecting to WebSocket at', wsURL);
+        var target = document.getElementById('terminal');
+        fit(term, target);
+
+        var wsURL = 'ws://' + location.host + '/ws/terminal/{{ container_name }}';
         var socket = new WebSocket(wsURL);
 
         socket.addEventListener('open', function (event) {
             console.log('WebSocket connection established');
             term.write('Connected to terminal\n\r');
-        });
-
-        socket.addEventListener('error', function (event) {
-            console.error('WebSocket error', event);
         });
 
         socket.addEventListener('message', function (event) {
@@ -47,6 +44,9 @@
             term.write('Disconnected from terminal\n\r');
         });
 
+        term.onData(function (data) {
+            socket.send(data);
+        });
     </script>
 </body>
 
