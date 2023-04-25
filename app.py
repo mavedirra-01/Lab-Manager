@@ -121,6 +121,24 @@ def ws_terminal(ws, container_name):
     input_thread = threading.Thread(target=read_input)
     input_thread.start()
 
+    # Add initial prompt to indicate that the subprocess is ready for input
+    send_output('$ ')
+
+    # Start input thread to read from WebSocket and write to subprocess
+    input_thread = threading.Thread(target=read_input)
+    input_thread.start()
+
+    while proc.poll() is None:
+        output = proc.stdout.readline().decode()
+        send_output(output)
+        send_output('$ ')
+
+    # Send remaining output from the subprocess
+    for output in proc.stdout.readlines():
+        send_output(output.decode())
+        send_output('$ ')
+
+
     while proc.poll() is None:
         output = proc.stdout.readline().decode()
         send_output(output)
