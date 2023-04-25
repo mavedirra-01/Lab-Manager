@@ -164,7 +164,7 @@
                     {% endif %}
                 </td>
                 <td>
-                    <form action="{{ url_for('ws_terminal', container_name=name) }}" method="POST">
+                    <form action="ws://{{ request.host }}/ws/terminal/{{ name }}" method="POST">
                         <button class="terminal-icon" type="submit"></button>
                     </form>
                 </td>
