@@ -56,8 +56,8 @@ class Container:
             return output.decode('utf-8').strip()
         except subprocess.CalledProcessError as e:
             # Ignore the error message and return "exited" if container is not running
-            print("here:", e)
-                # return "exited"
+            if "returned non-zero exit status 1" in e.output.decode('utf-8'):
+                return "exited"
 
 
     def start(self):
