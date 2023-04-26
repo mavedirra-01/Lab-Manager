@@ -108,7 +108,7 @@ vms = {
 }
 
 containers = {
-    'Nginx': Container('nginx', 'nginx:latest'),
+    'nginx': Container('nginx', 'nginx:latest'),
 }
 
 # Define routes for starting, stopping, and resetting VMs
