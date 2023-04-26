@@ -52,7 +52,7 @@ def start_container(container_name):
 def stop_container(container_name):
     if container_name in containers:
         containers[container_name].stop()
-    time.sleep(1)
+    time.sleep(3)
     return redirect(url_for('index'))
 
 
