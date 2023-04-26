@@ -8,7 +8,7 @@
             "headless": true,
             "iso_checksum": "sha256:5fdebc435ded46ae99136ca875afc6f05bde217be7dd018e1841924f71db46b5",
             "iso_url": "https://releases.ubuntu.com/20.04.3/ubuntu-20.04.3-desktop-amd64.iso",
-            "memory": "2048M",
+            "memory": "2048",
             "shutdown_command": "echo 'ubuntu'|sudo -S shutdown -P now",
             "ssh_password": "ubuntu",
             "ssh_username": "ubuntu",
