@@ -61,12 +61,13 @@ def reset_container(container_name):
     return redirect(url_for('index'))
 
 
-@app.route('/terminal/<container_name>')
+@app.route('/terminal/<container_name>/', methods=['POST'])
 def terminal(container_name):
-    port = random.randint(10001, 65535)
+    port = request.form['port']
     ttyd_command = f"ttyd -p {port} docker exec -it {container_name} /bin/bash"
     subprocess.Popen(ttyd_command.split())
-    return render_template('index.html', container_name=container_name, port=port, container=containers[container_name])
+    return redirect(url_for('index'))
+
 
 @app.route('/')
 def index():
