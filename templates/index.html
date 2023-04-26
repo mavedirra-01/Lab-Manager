@@ -142,14 +142,15 @@
                     {% endif %}
                 </td>
                 <td>
-                    <button class="terminal-icon" onclick="toggleIframe()"></button>
-                    <div id="terminal-iframe" style="display: none;">
-                        <iframe src="http://192.168.2.136:{{ port }}/terminal/{{ container_name }}"
-                            style="width:100%;height:500px;border:0;"></iframe>
+                    <button class="terminal-icon" onclick="toggleIframe('{{ name }}')"></button>
+                    <div id="terminal-iframe-{{ name }}" style="display: none;">
                     </div>
                     <script>
-                        function toggleIframe() {
-                            var iframe = document.getElementById("terminal-iframe");
+                        function toggleIframe(containerName) {
+                            var iframe = document.getElementById("terminal-iframe-" + containerName);
+                            if (iframe.innerHTML == "") {
+                                iframe.innerHTML = '<iframe src="{{ url_for("terminal", container_name=name) }}" style="width:100%;height:500px;border:0;"></iframe>';
+                            }
                             if (iframe.style.display === "none") {
                                 iframe.style.display = "block";
                             } else {
@@ -161,5 +162,6 @@
             </tr>
             {% endfor %}
         </table>
+
 </body>   
 </html>
