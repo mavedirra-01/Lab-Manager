@@ -3,6 +3,8 @@
         {
             "accelerator": "kvm",
             "disk_size": "10240M",
+            "memory": "2G",
+            "cpu": "2",
             "format": "qcow2",
             "headless": true,
             "iso_checksum": "sha256:5fdebc435ded46ae99136ca875afc6f05bde217be7dd018e1841924f71db46b5",
