@@ -25,8 +25,9 @@
                 " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<wait>",
                 "<enter><wait>"
             ],
+            "ssh_username": "ubuntu",
             "cpus": "2",
-            "disk_size": "10GB",
+            "disk_size": "10",
             "format": "qcow2",
             "headless": true,
             "iso_checksum": "sha256:dccff28314d9ae4ed262c8465b9a7dab5ae9b2a38b465a42f5f5a07e1a742c85",
