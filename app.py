@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask_sockets import Sockets
 import subprocess
 import random
+import time 
 
 class Container:
     def __init__(self, name, image):
@@ -66,6 +67,7 @@ def terminal(container_name):
     port = random.randint(10001, 65535)
     ttyd_command = f"ttyd -p {port} docker exec -it {container_name} /bin/bash"
     subprocess.Popen(ttyd_command.split())
+    time.sleep(1)
     return redirect(f"http://192.168.2.136:{port}")
 
 
