@@ -171,32 +171,12 @@
                     {% endif %}
                 </td>
                 <td>
-                    <form id="terminal-form-{{ name }}" action="{{ url_for('terminal', container_name=name) }}" method="GET">
-                        <button class="terminal-icon" type="submit"></button>
-                    </form>
+                    <a href="http://localhost:{{ port }}/{{ container_name }}" target="_blank">
+                        <button class="terminal-icon"></button>
+                    </a>
                 </td>
             </tr>
             {% endfor %}
         </table>
-<script>
-    $(document).ready(function () {
-        // On form submit, prevent the default action and send an AJAX request
-        $('#terminal-form').submit(function (e) {
-            e.preventDefault();
-            $.ajax({
-                url: $('#terminal-form').attr('action'),
-                type: 'GET',
-                success: function (data) {
-                    // If the AJAX request was successful, redirect to the TTYD terminal
-                    window.location.href = "{{ request.url_root }}:" + data.port + "/terminal.html";
-                },
-                error: function (xhr, status, error) {
-                    console.error("Error:", error);
-                }
-            });
-        });
-    });
-</script>
-
 </body>   
 </html>
