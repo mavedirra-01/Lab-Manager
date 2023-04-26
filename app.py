@@ -5,30 +5,30 @@ import random
 # from guacamole.client import GuacamoleClient
 # from guacamole.protocol import GuacamoleProtocol
 
-class VM:
-    def __init__(self, name, image):
-        self.name = name
-        self.image = image
-        self.state = self.get_state()
+# class VM:
+#     def __init__(self, name, image):
+#         self.name = name
+#         self.image = image
+#         self.state = self.get_state()
 
-    def get_state(self):
-        cmd = f"virsh list --all | grep {self.name} | awk '{{print $3}}'"
-        output = subprocess.check_output(cmd, shell=True)
-        return output.decode('utf-8').strip()
+#     def get_state(self):
+#         cmd = f"virsh list --all | grep {self.name} | awk '{{print $3}}'"
+#         output = subprocess.check_output(cmd, shell=True)
+#         return output.decode('utf-8').strip()
 
-    def start(self):
-        cmd = f"virsh start {self.name}"
-        subprocess.run(cmd.split())
+#     def start(self):
+#         cmd = f"virsh start {self.name}"
+#         subprocess.run(cmd.split())
 
-    def stop(self):
-        cmd = f"virsh shutdown {self.name}"
-        subprocess.run(cmd.split())
+#     def stop(self):
+#         cmd = f"virsh shutdown {self.name}"
+#         subprocess.run(cmd.split())
 
-    def reset(self):
-        self.stop()
-        cmd = f"virsh snapshot-revert {self.name} --current"
-        subprocess.run(cmd.split())
-        self.start()
+#     def reset(self):
+#         self.stop()
+#         cmd = f"virsh snapshot-revert {self.name} --current"
+#         subprocess.run(cmd.split())
+#         self.start()
 
 # class Guacamole:
 #     def __init__():
@@ -103,9 +103,9 @@ app = Flask(__name__)
 
 
 
-vms = {
-    'Ubuntu 20.04': VM('ubuntu20', 'ubuntu20.qcow2'),
-}
+# vms = {
+#     'Ubuntu 20.04': VM('ubuntu20', 'ubuntu20.qcow2'),
+# }
 
 containers = {
     'nginx': Container('nginx', 'nginx:latest'),
@@ -116,25 +116,25 @@ containers = {
 
 
 
-@app.route('/start_vm/<vm_name>', methods=['POST'])
-def start_vm(vm_name):
-    if vm_name in vms:
-        vms[vm_name].start()
-    return redirect(url_for('index'))
+# @app.route('/start_vm/<vm_name>', methods=['POST'])
+# def start_vm(vm_name):
+#     if vm_name in vms:
+#         vms[vm_name].start()
+#     return redirect(url_for('index'))
 
 
-@app.route('/stop_vm/<vm_name>', methods=['POST'])
-def stop_vm(vm_name):
-    if vm_name in vms:
-        vms[vm_name].stop()
-    return redirect(url_for('index'))
+# @app.route('/stop_vm/<vm_name>', methods=['POST'])
+# def stop_vm(vm_name):
+#     if vm_name in vms:
+#         vms[vm_name].stop()
+#     return redirect(url_for('index'))
 
 
-@app.route('/reset_vm/<vm_name>', methods=['POST'])
-def reset_vm(vm_name):
-    if vm_name in vms:
-        vms[vm_name].reset()
-    return redirect(url_for('index'))
+# @app.route('/reset_vm/<vm_name>', methods=['POST'])
+# def reset_vm(vm_name):
+#     if vm_name in vms:
+#         vms[vm_name].reset()
+#     return redirect(url_for('index'))
 
 
 # Define routes for starting, stopping, and resetting containers
@@ -169,17 +169,18 @@ def terminal(container_name):
 # Define route for displaying the main page
 @app.route('/')
 def index():
-    vms_status = {}
-    for name, vm in vms.items():
-        vms_status[name] = {
-            'state': vm.get_state()
-        }
+    # vms_status = {}
+    # for name, vm in vms.items():
+    #     vms_status[name] = {
+    #         'state': vm.get_state()
+    #     }
     containers_status = {}
     for name, container in containers.items():
         containers_status[name] = {
             'status': container.get_status()
         }
-    return render_template('index.html', vms=vms_status, containers=containers_status)
+    return render_template('index.html', containers=containers_status, port=port)
+    
 
 
 # Define a class for managing VMs
