@@ -3,7 +3,7 @@
         {
             "accelerator": "kvm",
             "disk_size": "10240M",
-            "memory": "2G",
+            "memory": "2048M",
             "cpu": "2",
             "format": "qcow2",
             "headless": true,
