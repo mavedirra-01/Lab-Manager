@@ -251,13 +251,11 @@
                     </form>
                 </td>
                 <td>
-                    {% if container.status == 'Running' %}
                     <form id="terminal-form-{{ name }}" action="{{ url_for('terminal', container_name=name) }}"
                         method="POST" target="_blank">
                         <button class="terminal-icon" type="button" onclick="toggleIframe('{{ name }}')"></button>
                         <input type="hidden" name="port" value="{{ port }}">
                     </form>
-                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
