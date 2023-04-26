@@ -1,26 +1,25 @@
 {
     "builders": [
         {
-            "type": "qemu",
             "accelerator": "kvm",
-            "iso_url": "https://releases.ubuntu.com/20.04.3/ubuntu-20.04.3-desktop-amd64.iso",
-            "iso_checksum_type": "sha256",
-            "iso_checksum": "sha256:5fdebc435ded46ae99136ca875afc6f05bde217be7dd018e1841924f71db46b5",
-            "disk_size": 10240,
+            "disk_size": "10240M",
             "format": "qcow2",
             "headless": true,
-            "ssh_username": "ubuntu",
+            "iso_checksum": "sha256:sha256:5fdebc435ded46ae99136ca875afc6f05bde217be7dd018e1841924f71db46b5",
+            "iso_url": "https://releases.ubuntu.com/20.04.3/ubuntu-20.04.3-desktop-amd64.iso",
+            "shutdown_command": "echo 'ubuntu'|sudo -S shutdown -P now",
             "ssh_password": "ubuntu",
-            "shutdown_command": "echo 'ubuntu'|sudo -S shutdown -P now"
+            "ssh_username": "ubuntu",
+            "type": "qemu"
         }
     ],
     "provisioners": [
         {
-            "type": "shell",
             "inline": [
                 "sudo apt update",
                 "sudo apt upgrade -y"
-            ]
+            ],
+            "type": "shell"
         }
     ]
 }
