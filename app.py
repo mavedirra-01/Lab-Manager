@@ -98,50 +98,9 @@ class Container:
 
 
 app = Flask(__name__)
-sockets = Sockets(app)
 
 
-@sockets.route('/ws/terminal/<container_name>', endpoint='terminal')
-def ws_terminal(ws, container_name):
-    cmd = f"docker exec -it {container_name} /bin/bash"
-    proc = subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE,
-                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-    def send_output(output):
-        ws.send(output.encode())
-
-    def read_input():
-        while True:
-            data = ws.receive()
-            if data is None:
-                break
-            proc.stdin.write(data.encode())
-            proc.stdin.flush()
-
-    input_thread = threading.Thread(target=read_input)
-    input_thread.start()
-    
-
-    while proc.poll() is None:
-        output = proc.stdout.readline().decode()
-        send_output(output)
-
-    # Send remaining output from the subprocess
-    for output in proc.stdout.readlines():
-        send_output(output.decode())
-
-    # Close the WebSocket connection
-    ws.close()
-    input_thread.join()
-
-    return ''
-
-
-@sockets.route('/echo')
-def echo_socket(ws):
-    while True:
-        message = ws.receive()
-        ws.send(message)
 
 vms = {
     'Ubuntu 20.04': VM('ubuntu20', 'ubuntu20.qcow2'),
@@ -153,6 +112,13 @@ containers = {
 
 # Define routes for starting, stopping, and resetting VMs
 
+
+@app.route('/terminal')
+def terminal():
+    container_name = 'mycontainer'
+    ttyd_command = f"ttyd -p 8000 docker exec -it /bin/bash {container_name}"
+    os.system(ttyd_command)
+    return render_template('index.html', container_name=container_name)
 
 @app.route('/start_vm/<vm_name>', methods=['POST'])
 def start_vm(vm_name):
@@ -219,4 +185,4 @@ def index():
 
 # Define a class for managing VMs
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0')

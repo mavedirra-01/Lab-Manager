@@ -171,9 +171,8 @@
                     {% endif %}
                 </td>
                 <td>
-                    <form action="{{ url_for('terminal', container_name=name).replace('http', 'ws') }}" method="GET">
-                        <button class="terminal-icon" type="submit"></button>
-                    </form>
+                    <form action="{{ url_for('terminal', container_name=name) }}" method="GET">
+                        <button class="terminal-icon" type="button" onclick="openTerminal('{{ name }}')">Terminal</button>
                     </form>
                 </td>
             </tr>
