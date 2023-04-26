@@ -66,7 +66,7 @@ def terminal(container_name):
     port = random.randint(10001, 65535)
     ttyd_command = f"ttyd -p {port} docker exec -it {container_name} /bin/bash"
     subprocess.Popen(ttyd_command.split())
-    return redirect(url_for('index'))
+    return redirect(f"http://192.168.2.136:{port}")
 
 
 @app.route('/')

@@ -239,25 +239,25 @@
                 <td>{{ name }}</td>
                 <td>{{ container.get_status() }}</td>
                 <td>
-                    {% if container.status == 'Not started' %}
                     <form action="{{ url_for('start_container', container_name=name) }}" method="POST">
                         <button class="start-icon" type="submit"></button>
                     </form>
-                    {% elif container.status == 'Running' %}
+                    
                     <form action="{{ url_for('stop_container', container_name=name) }}" method="POST">
                         <button class="stop-icon" type="submit"></button>
                     </form>
                     <form action="{{ url_for('reset_container', container_name=name) }}" method="POST">
                         <button class="reset-icon" type="submit"></button>
                     </form>
-                    {% endif %}
                 </td>
                 <td>
+                    {% if container.status == 'Running' %}
                     <form id="terminal-form-{{ name }}" action="{{ url_for('terminal', container_name=name) }}"
                         method="POST" target="_blank">
                         <button class="terminal-icon" type="button" onclick="toggleIframe('{{ name }}')"></button>
-                        <input type="hidden" name="port" value="{{ container.port }}">
+                        <input type="hidden" name="port" value="{{ port }}">
                     </form>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
