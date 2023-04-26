@@ -1,0 +1,46 @@
+{
+    "builders": [
+        {
+            "type": "qemu",
+            "accelerator": "kvm",
+            "disk_size": "10GB",
+            "iso_url": "https://releases.ubuntu.com/20.04.3/ubuntu-20.04.3-desktop-amd64.iso",
+            "iso_checksum": "sha256:dccff28314d9ae4ed262c8465b9a7dab5ae9b2a38b465a42f5f5a07e1a742c85",
+            "iso_checksum_type": "sha256",
+            "format": "qcow2",
+            "headless": true,
+            "net_device": "virtio-net",
+            "memory": "2048",
+            "cpus": "2",
+            "boot_command": [
+                "<esc><wait>",
+                "<esc><wait>",
+                "<enter><wait>",
+                "/install/vmlinuz<wait>",
+                " auto<wait>",
+                " console-setup/ask_detect=false<wait>",
+                " console-setup/layoutcode=us<wait>",
+                " console-setup/modelcode=pc105<wait>",
+                " debconf/frontend=noninteractive<wait>",
+                " debian-installer=en_US<wait>",
+                " fb=false<wait>",
+                " initrd=/install/initrd.gz<wait>",
+                " kbd-chooser/method=us<wait>",
+                " keyboard-configuration/layout=USA<wait>",
+                " keyboard-configuration/variant=USA<wait>",
+                " locale=en_US<wait>",
+                " netcfg/get_hostname=ubuntu-vm<wait>",
+                " netcfg/get_domain=localdomain<wait>",
+                " grub-installer/bootdev=/dev/sda<wait>",
+                " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<wait>",
+                "<enter><wait>"
+            ]
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "ansible",
+            "playbook_file": "playbook.yml"
+        }
+    ]
+}

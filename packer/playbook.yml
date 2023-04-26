@@ -1,0 +1,20 @@
+- hosts: all
+  become: true
+  tasks:
+    - name: Install packages
+      apt:
+        name: "{{ packages }}"
+        state: present
+      vars:
+        packages:
+          - novnc
+          - x11vnc
+    - name: Create new user
+      user:
+        name: "ubuntu"
+        password: "{{ 'ubuntu' | password_hash('sha512') }}"
+        shell: "/bin/bash"
+        home: "/home/ubuntu"
+        createhome: true
+    - name: Start novnc
+      shell: "sudo x11vnc -display :0"
