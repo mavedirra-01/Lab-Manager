@@ -162,8 +162,8 @@ def reset_container(container_name):
 @app.route('/terminal/<container_name>')
 def terminal(container_name):
     port = random.randint(10001, 65535)
-    ttyd_command = f"ttyd -p {port} docker exec -it /bin/bash {container_name}"
-    os.system(ttyd_command)
+    cmd = f"ttyd -p {port} docker exec -it /bin/bash {container_name}"
+    subprocess.run(cmd)
     return {'port': port}
     return render_template('index.html', container_name=container_name)
 
