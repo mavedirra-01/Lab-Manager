@@ -171,9 +171,21 @@
                     {% endif %}
                 </td>
                 <td>
-                    <iframe src="http://192.168.2.136: {{ port }}/terminal/{{ container_name }}" style="width:100%;height:500px;border:0;"></iframe>
-                        <button class="terminal-icon"></button>
-                    </a>
+                    <button class="terminal-icon" onclick="toggleIframe()">Open Terminal</button>
+                    <div id="terminal-iframe" style="display: none;">
+                        <iframe src="http://192.168.2.136:{{ port }}/terminal/{{ container_name }}"
+                            style="width:100%;height:500px;border:0;"></iframe>
+                    </div>
+                    <script>
+                        function toggleIframe() {
+                            var iframe = document.getElementById("terminal-iframe");
+                            if (iframe.style.display === "none") {
+                                iframe.style.display = "block";
+                            } else {
+                                iframe.style.display = "none";
+                            }
+                        }
+                    </script>
                 </td>
             </tr>
             {% endfor %}
