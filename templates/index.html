@@ -234,10 +234,10 @@
                 <th>Action</th>
                 <th>Connect</th>
             </tr>
-            {% for name, container in containers.items() %}
+            {% for name, container in containers_list.items() %}
             <tr>
                 <td>{{ name }}</td>
-                <td>{{ container.status }}</td>
+                <td>{{ container.get_status() }}</td>
                 <td>
                     {% if container.status == 'Not started' %}
                     <form action="{{ url_for('start_container', container_name=name) }}" method="POST">
@@ -255,7 +255,7 @@
                 <td>
                     <form id="terminal-form-{{ name }}" action="{{ url_for('terminal', container_name=name) }}"
                         method="POST" target="_blank">
-                        <button class="terminal-icon" type="submit"></button>
+                        <button class="terminal-icon" type="button" onclick="toggleIframe('{{ name }}')"></button>
                         <input type="hidden" name="port" value="{{ container.port }}">
                     </form>
                 </td>
@@ -263,7 +263,14 @@
             {% endfor %}
         </table>
     </div>
+    <script>
+        function toggleIframe(containerName) {
+            var form = document.getElementById(`terminal-form-${containerName}`);
+            form.submit();
+        }
+    </script>
 </body>
+
 
 
 </html>
