@@ -2,19 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask_sockets import Sockets
 import subprocess
 import random
-import time 
-import json
-
-
-import json
-
-
-class ContainerEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Container):
-            return {"name": obj.name, "status": obj.get_status(), "image": obj.image}
-        return super().default(obj)
-
+import time
 
 class Container:
     def __init__(self, name, image):
@@ -46,8 +34,6 @@ class Container:
 
 
 app = Flask(__name__)
-app.json_encoder = ContainerEncoder
-
 
 
 containers = {

@@ -126,12 +126,12 @@
             {% for name, container in containers_list.items() %}
             <tr>
                 <td>{{ name }}</td>
-                <td id="{{ name }}-status">{{ container.get_status() }}</td>
+                <td>{{ container.get_status() }}</td>
                 <td>
                     <form action="{{ url_for('start_container', container_name=name) }}" method="POST">
                         <button class="start-icon" type="submit"></button>
                     </form>
-
+                    
                     <form action="{{ url_for('stop_container', container_name=name) }}" method="POST">
                         <button class="stop-icon" type="submit"></button>
                     </form>
@@ -155,25 +155,8 @@
             var form = document.getElementById(`terminal-form-${containerName}`);
             form.submit();
         }
-
-        // Refresh the status of containers every 5 minutes
-        setInterval(function () {
-            var containerNames = Object.keys({{ containers_list| tojson }});
-        containerNames.forEach(function (containerName) {
-            var statusCell = document.getElementById(`${containerName}-status`);
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    statusCell.innerHTML = this.responseText;
-                }
-            };
-            xhr.open("GET", `{{ url_for('get_container_status', container_name=containerName) }}`, true);
-            xhr.send();
-        });
-        }, 30000); // 5 minutes in milliseconds
     </script>
 </body>
-
 
 
 
