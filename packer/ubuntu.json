@@ -1,24 +1,45 @@
 {
     "builders": [
         {
-            "accelerator": "kvm",
-            "disk_size": "10240M",
-            "cpus": "2",
-            "format": "qcow2",
-            "headless": true,
-            "iso_checksum": "sha256:5fdebc435ded46ae99136ca875afc6f05bde217be7dd018e1841924f71db46b5",
+            "type": "qemu",
             "iso_url": "https://releases.ubuntu.com/20.04.3/ubuntu-20.04.3-desktop-amd64.iso",
-            "memory": "2048",
-            "shutdown_command": "echo 'ubuntu'|sudo -S shutdown -P now",
-            "ssh_password": "ubuntu",
+            "iso_checksum": "sha256:5fdebc435ded46ae99136ca875afc6f05bde217be7dd018e1841924f71db46b5",
             "ssh_username": "ubuntu",
-            "type": "qemu"
+            "ssh_password": "ubuntu",
+            "boot_wait": "10s",
+            "disk_size": "10240M",
+            "format": "qcow2",
+            "accelerator": "kvm",
+            "headless": true,
+            "memory": "2048",
+            "cpus": "2",
+            "boot_command": [
+                "<esc><wait>",
+                "<esc><wait>",
+                "<enter><wait>",
+                "/install/vmlinuz<wait>",
+                " auto<wait>",
+                " console-setup/ask_detect=false<wait>",
+                " console-setup/layoutcode=us<wait>",
+                " console-setup/modelcode=pc105<wait>",
+                " debconf/frontend=noninteractive<wait>",
+                " debian-installer=en_US<wait>",
+                " fb=false<wait>",
+                " initrd=/install/initrd.gz<wait>",
+                " kbd-chooser/method=us<wait>",
+                " keyboard-configuration/layout=USA<wait>",
+                " keyboard-configuration/variant=USA<wait>",
+                " locale=en_US<wait>",
+                " netcfg/get_hostname=UBUNTU1<wait>",
+                " preseed/url=preseed.cfg<wait>",
+                " -- <wait>",
+                "<enter><wait>"
+            ]
         }
     ],
     "provisioners": [
         {
             "inline": [
-                "sleep 30",
                 "sudo apt update",
                 "sudo apt upgrade -y"
             ],

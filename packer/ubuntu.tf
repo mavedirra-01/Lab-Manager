@@ -1,30 +1,19 @@
-terraform {
-  required_providers {
-    libvirt = {
-      source = "dmacvicar/libvirt"
-    }
-  }
-}
-
 provider "libvirt" {
   uri = "qemu:///system"
 }
 
-resource "libvirt_volume" "ubuntu_disk" {
-  name        = "ubuntu.qcow2"
-  pool        = "default"
-  source_file = "/ubuntu-kvm-0.qcow2"
-  format      = "qcow2"
-  size        = "${var.disk_size}"
+resource "libvirt_volume" "ubuntu" {
+  name = "ubuntu.qcow2"
+  size = "10G"
 }
 
-resource "libvirt_domain" "ubuntu_vm" {
-  name   = "ubuntu-vm"
-  memory = 2048
-  vcpu   = 2
+resource "libvirt_domain" "ubuntu" {
+  name   = "ubuntu"
+  memory = "1024"
+  vcpu   = 1
 
   disk {
-    volume_id = libvirt_volume.ubuntu_disk.id
+    volume_id = libvirt_volume.ubuntu.id
   }
 
   network_interface {
@@ -33,36 +22,14 @@ resource "libvirt_domain" "ubuntu_vm" {
 
   console {
     type        = "pty"
-    target_type = "serial"
     target_port = "0"
+    target_type = "serial"
   }
 
-  console {
-    type        = "pty"
-    target_type = "virtio"
-    target_port = "1"
+  graphics {
+    type        = "spice"
+    autoport    = "yes"
   }
 
-  console {
-    type        = "pty"
-    target_type = "virtio"
-    target_port = "2"
-  }
-
-  console {
-    type        = "pty"
-    target_type = "virtio"
-    target_port = "3"
-  }
-
-  console {
-    type        = "pty"
-    target_type = "virtio"
-    target_port = "4"
-  }
+  user_data = "${file("${path.module}/cloud-config.yaml")}"
 }
-
-output "ip_address" {
-  value = libvirt_domain.ubuntu_vm.ip_address
-}
-
