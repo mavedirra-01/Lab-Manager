@@ -68,8 +68,6 @@ def terminal(container_name):
     subprocess.Popen(ttyd_command.split())
     return render_template('index.html', container_name=container_name, port=port, container=containers[container_name])
 
-
-# Define route for displaying the main page
 @app.route('/')
 def index():
     containers_status = {}
@@ -77,7 +75,8 @@ def index():
         containers_status[name] = {
             'status': container.get_status()
         }
-    return render_template('index.html', containers=containers_status)
+    return render_template('index.html', containers=containers_status, containers_list=containers)
+
     
 
 
