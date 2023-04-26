@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sockets import Sockets
 import subprocess
+import random
 # from guacamole.client import GuacamoleClient
 # from guacamole.protocol import GuacamoleProtocol
 
@@ -113,12 +114,7 @@ containers = {
 # Define routes for starting, stopping, and resetting VMs
 
 
-@app.route('/terminal')
-def terminal():
-    container_name = 'mycontainer'
-    ttyd_command = f"ttyd -p 8000 docker exec -it /bin/bash {container_name}"
-    os.system(ttyd_command)
-    return render_template('index.html', container_name=container_name)
+
 
 @app.route('/start_vm/<vm_name>', methods=['POST'])
 def start_vm(vm_name):
@@ -165,7 +161,11 @@ def reset_container(container_name):
 
 @app.route('/terminal/<container_name>')
 def terminal(container_name):
-    return render_template('terminal.html', container_name=container_name)
+    port = random.randint(10001, 65535)
+    ttyd_command = f"ttyd -p {port} docker exec -it /bin/bash {container_name}"
+    os.system(ttyd_command)
+    return {'port': port}
+    return render_template('index.html', container_name=container_name)
 
 # Define route for displaying the main page
 @app.route('/')
