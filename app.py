@@ -19,7 +19,7 @@ class Container:
             return "Not started"
 
     def start(self):
-        cmd = f"docker run -d --rm --name {self.name} {self.image}"
+        cmd = f"docker run -d --rm --hostname {self.name} --name {self.name} {self.image}"
         subprocess.run(cmd.split())
 
     def stop(self):
