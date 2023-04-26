@@ -173,7 +173,7 @@
                 <td>
                     <button class="terminal-icon" onclick="toggleIframe()"></button>
                     <div id="terminal-iframe" style="display: none;">
-                        <iframe src="{{ url_for('terminal', container_name=container_name, _external=True, _scheme='http', port=port) }}"
+                        <iframe src="http://192.168.2.136:{{ port }}/terminal/{{ container_name }}"
                             style="width:100%;height:500px;border:0;"></iframe>
                     </div>
                     <script>

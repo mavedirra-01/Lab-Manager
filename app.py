@@ -179,7 +179,7 @@ def index():
         containers_status[name] = {
             'status': container.get_status()
         }
-    return render_template('index.html', containers=containers_status, port=port)
+    return render_template('index.html', containers=containers_status)
     
 
 
