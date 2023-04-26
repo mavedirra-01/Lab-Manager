@@ -30,7 +30,7 @@
             "disk_size": "10",
             "format": "qcow2",
             "headless": true,
-            "iso_checksum": "sha256:dccff28314d9ae4ed262c8465b9a7dab5ae9b2a38b465a42f5f5a07e1a742c85",
+            "iso_checksum": "sha256:5fdebc435ded46ae99136ca875afc6f05bde217be7dd018e1841924f71db46b5",
             "iso_url": "https://releases.ubuntu.com/20.04.3/ubuntu-20.04.3-desktop-amd64.iso",
             "memory": "2048",
             "net_device": "virtio-net",
