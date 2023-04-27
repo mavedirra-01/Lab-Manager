@@ -125,16 +125,18 @@ def terminal(container_name):
     return redirect(f"http://192.168.2.136:{port}")
 
 
-@app.route('/containers_status')
-def containers_status():
+@app.route('/containers')
+def containers():
     containers_list = []
     for container in containers:
         container_dict = {
             'name': container.name,
             'image': container.image.tags[0],
+            'status': container.status,
         }
         containers_list.append(container_dict)
     return jsonify(containers_list)
+
 
 
 @app.route('/')
