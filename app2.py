@@ -104,7 +104,8 @@ def terminal(container_name):
 
 @app.route('/containers_status')
 def containers_status():
-    containers = client.containers.list()
+    global containers
+    # containers = client.containers.list()
     containers_status = {}
     # for container in containers:
     containers[container.name].get_status()
