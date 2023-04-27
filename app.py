@@ -26,7 +26,7 @@ class ContainerManager:
                 self.containers[name].status = status
 
     def update_containers_thread(self):
-        threading.Thread(target=self.update_containers).start()
+        self.update_containers()
 
 class Container:
     def __init__(self, name, image):
@@ -112,6 +112,12 @@ def terminal(container_name):
     subprocess.Popen(ttyd_command.split())
     time.sleep(1)
     return redirect(f"http://192.168.2.136:{port}")
+
+
+@app.route('/update-containers')
+def update_containers_endpoint():
+    container_manager.update_containers_thread()
+    return '', 204
 
 
 @app.route('/')

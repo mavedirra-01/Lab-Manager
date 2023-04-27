@@ -50,13 +50,15 @@
 <body>
     <header class="container-fluid bg-dark text-white py-3">
         <h1 class="text-center">Containers Manager</h1>
-            <button id="refresh-btn" class="btn btn-primary"><i class="bi-arrow-clockwise"></i> Refresh</button>
+        <button id="refresh-btn" class="btn btn-primary"><i class="bi-arrow-clockwise"></i> Refresh</button>
     </header>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             var refreshBtn = document.getElementById("refresh-btn");
             refreshBtn.addEventListener("click", function () {
-                update_containers_thread();
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', '/update-containers', true);
+                xhr.send();
             });
         });
     </script>
