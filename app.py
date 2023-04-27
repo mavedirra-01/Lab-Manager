@@ -92,7 +92,7 @@ class Container:
 
 
 app = Flask(__name__)
-
+containers = Container.get_containers()
 # Define routes for starting, stopping, and resetting containers
 
 
