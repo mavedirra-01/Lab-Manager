@@ -104,6 +104,14 @@ def terminal(container_name):
 
 @app.route('/containers_status')
 def containers_status():
+    global containers
+    for container in client.containers.list(all=True):
+        if container.name not in containers:
+            containers[container.name] = Container(
+                container.name, container.image.tags[0])
+            containers[container.name].get_status()
+        else:
+            containers[container.name].get_status()
     containers = client.containers.list()
     containers_status = {}
     for container in containers:
