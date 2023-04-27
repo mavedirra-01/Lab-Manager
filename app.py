@@ -4,6 +4,7 @@ import subprocess
 import random
 import time
 
+
 class Container:
     def __init__(self, name, image):
         self.name = name
@@ -11,10 +12,13 @@ class Container:
         self.image = image
 
     def get_status(self):
-        cmd = f"docker ps --format '{{{{.Names}}}}' | grep {self.name}"
+        cmd = f"docker ps --format '{{{{.Status}}}}' -f name={self.name}"
         try:
             output = subprocess.check_output(cmd, shell=True)
-            return "Running"
+            if 'Exited' in output.decode():
+                return "Exited"
+            else:
+                return "Running"
         except subprocess.CalledProcessError:
             return "Not started"
 
@@ -30,6 +34,23 @@ class Container:
         self.stop()
         time.sleep(2)
         self.start()
+
+
+# Get a list of all containers
+output = subprocess.check_output(
+    'docker ps -a --format "{{.Names}} {{.Image}}"', shell=True)
+output = output.decode().strip()
+if output:
+    container_list = output.split('\n')
+else:
+    container_list = []
+
+# Create instances of the Container class for each container
+containers = {}
+for container_info in container_list:
+    name, image = container_info.split()
+    containers[name] = Container(name, image)
+
 
 
 app = Flask(__name__)
