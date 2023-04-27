@@ -16,10 +16,10 @@ class ContainerManager:
         output = subprocess.check_output(cmd, shell=True).decode('utf-8')
         for line in output.splitlines():
             name, image, status = line.split()
-            if name not in self.containers:
-                self.containers[name] = Container(name, image)
-            else:
-                self.containers[name].image = image
+            # if name not in self.containers:
+            #     self.containers[name] = Container(name, image)
+            # else:
+            #     self.containers[name].image = image
 
     def update_containers_thread(self):
         self.update_containers()
