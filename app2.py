@@ -29,8 +29,6 @@ class Container:
         cmd_failed = f"docker start {self.name}"
         try:
             output = subprocess.check_output(cmd, shell=True)
-            if 'Conflict' in output.decode():
-                subprocess.run(cmd_failed.split())
         except subprocess.CalledProcessError:
             subprocess.run(cmd_failed.split())
 

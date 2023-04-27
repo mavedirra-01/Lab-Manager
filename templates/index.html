@@ -151,21 +151,21 @@
     <!-- Bootstrap Bundle JS (includes Popper.js) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function updateContainerTable() {
+        function updateContainerStatus() {
             fetch('/containers_status')
                 .then(response => response.json())
                 .then(data => {
-                    const containerTable = document.getElementById('table-body');
-                    Object.keys(data).forEach(name => {
-                        const row = containerTable.querySelector(`tr[data-container-name="${name}"]`);
-                        if (row) {
-                            row.querySelector('.status').textContent = data[name].status;
+                    for (let containerName in data) {
+                        let statusCell = document.querySelector(`tr[data-container-name="${containerName}"] .status`);
+                        if (statusCell) {
+                            statusCell.textContent = data[containerName];
                         }
-                    });
-                });
+                    }
+                })
+                .catch(error => console.error(error));
         }
 
-        setInterval(updateContainerTable, 5000);
+        setInterval(updateContainerStatus, 5000);
     </script>
 
 </body>
