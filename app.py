@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_sockets import Sockets
 import subprocess
 import random
@@ -25,7 +25,7 @@ class ContainerManager:
             else:
                 self.containers[name].image = image
                 self.containers[name].status = status
-        return self.containers
+        return jsonify(containers_status)
 
     def update_containers_thread(self):
         self.update_containers()
