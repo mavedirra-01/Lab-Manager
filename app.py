@@ -144,7 +144,7 @@ def containers_status():
 
 @app.route('/')
 def index():
-    containers = Container.get_containers()
+    containers = get_containers()
     return render_template('index.html', containers_list=containers)
 
 
