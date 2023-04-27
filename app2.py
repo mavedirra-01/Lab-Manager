@@ -9,20 +9,21 @@ app = Flask(__name__)
 client = docker.from_env()
 
 
+def get_status():
+    global containers
+    for container in containers.values():
+        try:
+            container_status = client.containers.get(container.name).status
+        except docker.errors.NotFound:
+            container_status = 'not found'
+        container.status = container_status
+
+
 class Container:
     def __init__(self, name, image):
         self.name = name
         self.status = self.get_status()
         self.image = image
-
-    def get_status():
-        global containers
-        for container in containers.values():
-            try:
-                container_status = client.containers.get(container.name).status
-            except docker.errors.NotFound:
-                container_status = 'not found'
-            container.status = container_status
 
 
     def start(self):
