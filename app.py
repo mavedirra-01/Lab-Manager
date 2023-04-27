@@ -1,11 +1,3 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
-from flask_sockets import Sockets
-import subprocess
-import random
-from threading import Thread
-import time
-
-
 # class ContainerManager:
 #     def __init__(self):
 #         self.containers = {}
@@ -30,6 +22,16 @@ import time
 
 #     def update_containers_thread(self):
 #         self.update_containers()
+
+from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask_sockets import Sockets
+import subprocess
+import random
+from threading import Thread
+import time
+
+
+
 
 class Container:
     def __init__(self, name, image):
@@ -116,10 +118,12 @@ def terminal(container_name):
 def containers_status():
     containers_status = {}
     for name, container in containers.items():
+        container.status = container.get_status()  # update the status attribute
         containers_status[name] = {
-            'status': container.get_status()
+            'status': container.status  # use the updated status attribute
         }
     return jsonify(containers_status)
+
 
 
 @app.route('/')
