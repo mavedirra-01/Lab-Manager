@@ -23,13 +23,13 @@
 #     def update_containers_thread(self):
 #         self.update_containers()
 
+import json
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_sockets import Sockets
 import subprocess
 import random
 from threading import Thread
 import time
-import docker
 
 
 
@@ -76,27 +76,14 @@ class Container:
         self.stop()
         time.sleep(2)
         self.start()
-    
 
-def get_containers():
-    containers = []
-    cmd = ['docker', 'ps', '-a', '--format', '{{.Names}} {{.Image}} {{.Status}}']
-    output = subprocess.check_output(cmd, shell=True)
-    subprocess.run(cmd.split())
-    lines = output.decode('utf-8').strip().split('\n')
-    for line in lines[1:]:
-        name, image, status = line.split()
-        container = Container(name, image)
-        container.status = status
-        containers.append(container)
-    return containers
 
 
 
 
 app = Flask(__name__)
 # Define routes for starting, stopping, and resetting containers
-containers = []
+containers = {}
 
 @app.route('/start_container/<container_name>', methods=['POST'])
 def start_container(container_name):
@@ -129,12 +116,17 @@ def terminal(container_name):
     return redirect(f"http://192.168.2.136:{port}")
 
 
+@app.route('/containers')
+def get_containers_status():
+    global containers
+    containers_status = {}
+    for container_name, container in containers.items():
+        containers_status[container_name] = container.get_status()
+    return json.dumps(containers_status)
 
 
 @app.route('/')
 def index():
-    global containers
-    containers = get_containers()
     return render_template('index.html', containers_list=containers)
 
 
