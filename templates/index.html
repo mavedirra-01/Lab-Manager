@@ -149,7 +149,7 @@
             fetch('/containers_status')
                 .then(response => response.json())
                 .then(data => {
-                    const containerTable = document.getElementById('container-table');
+                    const containerTable = document.getElementById('table-body');
                     Object.keys(data).forEach(name => {
                         const row = containerTable.querySelector(`tr[data-container-name="${name}"]`);
                         if (row) {
