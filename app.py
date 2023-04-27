@@ -6,30 +6,30 @@ from threading import Thread
 import time
 
 
-class ContainerManager:
-    def __init__(self):
-        self.containers = {}
+# class ContainerManager:
+#     def __init__(self):
+#         self.containers = {}
 
 
-    def update_containers(self):
-        cmd = "docker ps -a --format '{{.Names}} {{.Image}} {{.Status}}' | awk '{print $1, $2, $3}'"
-        output = subprocess.check_output(cmd, shell=True).decode('utf-8')
-        for line in output.splitlines():
-            name, image, status = line.split()
-            # if name not in self.containers:
-            self.containers[name] = Container(name, image)
-        if 'Exited' in output.decode():
-            return "Exited"
-        if not output.decode():
-            return "Not Started"
-        else:
-            return "Running"
-            # else:
-            #     self.containers[name].image = image
+#     def update_containers(self):
+#         cmd = "docker ps -a --format '{{.Names}} {{.Image}} {{.Status}}' | awk '{print $1, $2, $3}'"
+#         output = subprocess.check_output(cmd, shell=True).decode('utf-8')
+#         for line in output.splitlines():
+#             name, image, status = line.split()
+#             # if name not in self.containers:
+#             self.containers[name] = Container(name, image)
+#         if 'Exited' in output.decode():
+#             return "Exited"
+#         if not output.decode():
+#             return "Not Started"
+#         else:
+#             return "Running"
+#             # else:
+#             #     self.containers[name].image = image
 
 
-    def update_containers_thread(self):
-        self.update_containers()
+#     def update_containers_thread(self):
+#         self.update_containers()
 
 class Container:
     def __init__(self, name, image):
@@ -76,32 +76,30 @@ class Container:
 
 
 app = Flask(__name__)
-container_manager = ContainerManager()
+containers = {}
 
 # Define routes for starting, stopping, and resetting containers
 
 
 @app.route('/start_container/<container_name>', methods=['POST'])
 def start_container(container_name):
-    if container_name in container_manager.containers:
-        container_manager.containers[container_name].start()
+    if container_name in containers:
+        containers[container_name].start()
     return redirect(url_for('index'))
-
-# Define routes for stopping and resetting containers
 
 
 @app.route('/stop_container/<container_name>', methods=['POST'])
 def stop_container(container_name):
-    if container_name in container_manager.containers:
-        container_manager.containers[container_name].stop()
+    if container_name in containers:
+        containers[container_name].stop()
     time.sleep(0.5)
     return redirect(url_for('index'))
 
 
 @app.route('/reset_container/<container_name>', methods=['POST'])
 def reset_container(container_name):
-    if container_name in container_manager.containers:
-        container_manager.containers[container_name].reset()
+    if container_name in containers:
+        containers[container_name].reset()
     return redirect(url_for('index'))
 
 
@@ -122,7 +120,6 @@ def containers_status():
             'status': container.get_status()
         }
     return jsonify(containers_status)
-
 
 
 @app.route('/')
