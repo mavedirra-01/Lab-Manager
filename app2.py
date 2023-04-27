@@ -19,6 +19,7 @@ class Container:
         try:
             container = client.containers.get(self.name)
             self.status = container.status  # update status dynamically
+            print(container.status)
             return container.status
         except:
             return 'not found'
