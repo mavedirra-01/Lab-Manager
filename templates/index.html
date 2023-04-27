@@ -1,59 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Containers Manager</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
-    <!-- Bootstrap Icons CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <!-- Custom CSS -->
     <style>
         body {
-            background-color: #121212;
-            color: #f1f1f1;
+            font-family: sans-serif;
+            background-color: #f9fafb;
         }
 
-        /* Customize the color of the icons */
-        .bi {
-            color: #f1f1f1;
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
         }
 
-        /* Customize the background color of the table */
+        .page-header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-header h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 0;
+        }
+
         table {
-            background-color: #1e1e1e;
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
         }
 
-        /* Customize the color of the table headers */
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
         th {
-            color: #f1f1f1;
+            font-size: 18px;
+            font-weight: 700;
+            background-color: #333;
+            color: #fff;
         }
 
-        /* Customize the color of the table rows */
-        tr {
-            color: #c0c0c0;
+        td {
+            font-size: 16px;
+            font-weight: 400;
+            color: #555;
         }
 
-        /* Customize the color of the buttons */
-        .btn-primary,
-        .btn-danger,
-        .btn-warning,
+        .btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0069d9;
+            border-color: #0062cc;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+            border-color: #ffc107;
+            color: #fff;
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+            border-color: #d39e00;
+        }
         .btn-success {
-            color: #f1f1f1;
-            background-color: #3c3c3c;
+        color: #fff;
+        background-color: #28a745;
+        border-color: #28a745;
         }
 
-        /* Customize the color of the footer */
-        .footer {
-            background-color: #1e1e1e;
-            color: #c0c0c0;
+        .btn-success:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
         }
 
+        .btn-danger {
+        color: #fff;
+        background-color: #dc3545;
+        border-color: #dc3545;
+        }
+
+        .btn-danger:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+        }
+
+        .btn-secondary {
+        color: #fff;
+        background-color: #6c757d;
+        border-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+        background-color: #5a6268;
+        border-color: #545b62;
+        }
+
+        /* Customize the background color of the table rows when hovered */
         table.table-hover tbody tr:hover {
-            background-color: #c0c0c0;
+        background-color: #c0c0c0;
+        }
+
+        /* Add a transition effect when hovering over a table row */
+        table.table-hover tbody tr:hover {
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+        }
+
+        /* Add a box-shadow effect to the table header */
+        table thead th {
+        box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
         }
     </style>
+
 </head>
 
 <body>
