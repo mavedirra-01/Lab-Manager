@@ -126,7 +126,7 @@ def terminal(container_name):
 
 
 @app.route('/containers')
-def containers():
+def containers_info():
     containers_list = []
     for container in containers:
         container_dict = {
@@ -136,6 +136,7 @@ def containers():
         }
         containers_list.append(container_dict)
     return jsonify(containers_list)
+
 
 
 
