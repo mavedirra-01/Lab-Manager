@@ -44,10 +44,16 @@ class Container:
     def start(self):
         cmd = f"docker run -d --hostname {self.name} --name {self.name} {self.image}"
         subprocess.run(cmd.split())
+    
+    def remove(self):
+        cmd = f"docker rm {self.name}"
+        subprocess.run(cmd.split())
 
     def stop(self):
         cmd = f"docker stop {self.name}"
         subprocess.run(cmd.split())
+        time.sleep(0.2)
+        self.remove()
 
     def reset(self):
         self.stop()
