@@ -26,9 +26,7 @@ class ContainerManager:
                 self.containers[name].status = status
 
     def update_containers_thread(self):
-        while True:
-            self.update_containers()
-            time.sleep(60)
+        self.update_containers()
 
 class Container:
     def __init__(self, name, image):
