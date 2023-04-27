@@ -111,13 +111,19 @@
                             <button class="btn btn-success"><i class="bi-terminal"></i></button>
                             <input type="hidden" name="port" value="{{ port }}">
                         </form>
-                    {% endif %}
+                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}
+                {% if not containers_list %}
+                <tr>
+                    <td colspan="4" class="text-center">No containers found</td>
+                </tr>
+                {% endif %}
             </tbody>
         </table>
     </main>
+
 
     <footer class="container-fluid bg-dark text-white py-3 fixed-bottom">
         <div class="text-center">Containers Manager &copy; 2023</div>
