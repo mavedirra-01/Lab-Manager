@@ -59,32 +59,7 @@
 <body>
     <header class="container-fluid bg-dark text-white py-3">
         <h1 class="text-center">Containers Manager</h1>
-        <button id="refresh-btn" class="btn btn-primary"><i class="bi-arrow-clockwise"></i> Refresh</button>
     </header>
-    <!-- <script>
-        var refreshBtn = document.getElementById("refresh-btn");
-        refreshBtn.addEventListener("click", function () {
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', '/update-containers', true);
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    var containers = JSON.parse(xhr.responseText);
-                    var tableBody = document.getElementById("table-body");
-                    tableBody.innerHTML = "";
-                    for (var name in containers) {
-                        var row = "<tr>";
-                        row += "<td>" + name + "</td>";
-                        row += "<td>" + containers[name].status + "</td>";
-                        row += "<td>...</td>";
-                        row += "<td>...</td>";
-                        row += "</tr>";
-                        tableBody.innerHTML += row;
-                    }
-                }
-            };
-            xhr.send();
-        });
-    </script> -->
 
 <main class="container my-5">
     <h2 class="mb-4">Docker Containers</h2>
@@ -106,18 +81,17 @@
                 <td class="status">{{ container.status }}</td>
                 <td>
                     <form action="{{ url_for('start_container', container_name=container.name) }}" method="POST">
-                        <button id="start-button" class="btn btn-success start-button"
-                            data-container-name="{{ container.name }}">Start</button>
+                        <button id="start-button" class="btn btn-success start-button" {% if container.status=='running'
+                            %}disabled{% endif %} data-container-name="{{ container.name }}">Start</button>
                     </form>
                     <form action="{{ url_for('stop_container', container_name=container.name) }}" method="POST">
-                        <button id="stop-button" class="btn btn-danger stop-button"
-                            data-container-name="{{ container.name }}">Stop</button>
+                        <button id="stop-button" class="btn btn-danger stop-button" {% if container.status !='running' %}disabled{%
+                            endif %} data-container-name="{{ container.name }}">Stop</button>
                     </form>
                     <form action="{{ url_for('reset_container', container_name=container.name) }}" method="POST">
                         <button id="reset-button" class="btn btn-warning reset-button"
                             data-container-name="{{ container.name }}">Reset</button>
                     </form>
-
                 </td>
                 <td>
                     {% if container.status == 'running' %}
@@ -125,7 +99,7 @@
                         <button id="terminal-button" class="btn btn-primary terminal-button"
                             data-container="{{ container.name }}">Terminal</button>
                     </form>
-
+            
                     {% else %}
                     <button class="btn btn-secondary disabled">Terminal</button>
                     {% endif %}
