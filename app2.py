@@ -106,16 +106,23 @@ def containers_status():
     return containers_status
 
 
-
 @app.route('/')
 def index():
     global containers
+    containers_list = []
     for container in client.containers.list(all=True):
         if container.name not in containers:
             containers[container.name] = Container(
                 container.name, container.image.tags[0])
-    print(containers)
-    return render_template('index.html', containers_list=containers)
+        status = containers[container.name].status
+        containers_list.append({
+            'name': container.name,
+            'image': container.image.tags[0],
+            'status': status,
+        })
+    print(containers_list)
+    return render_template('index.html', containers_list=containers_list)
+
 
 
 # Define a class for managing VMs
