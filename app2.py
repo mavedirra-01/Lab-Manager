@@ -114,7 +114,7 @@ def index():
         if container.name not in containers:
             containers[container.name] = Container(
                 container.name, container.image.tags[0])
-    print(containers_list)
+    print(containers)
     return render_template('index.html', containers_list=containers)
 
 
