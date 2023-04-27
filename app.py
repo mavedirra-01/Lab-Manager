@@ -5,9 +5,28 @@ import random
 from threading import Thread
 import time
 
+
+class ContainerManager:
+    def __init__(self):
+        self.containers = {}
+
+
+    def update_containers(self):
+        cmd = "docker ps -a --format '{{.Names}} {{.Image}} {{.Status}}' | awk '{print $1, $2, $3}'"
+        output = subprocess.check_output(cmd, shell=True).decode('utf-8')
+        for line in output.splitlines():
+            name, image, status = line.split()
+            # if name not in self.containers:
+            self.containers[name] = Container(name, image)
+            # else:
+            #     self.containers[name].image = image
+
+
+    def update_containers_thread(self):
+        self.update_containers()
+
 class Container:
     def __init__(self, name, image):
-        self.containers = {}
         self.name = name
         self.status = self.get_status()
         self.image = image
@@ -51,7 +70,7 @@ class Container:
 
 
 app = Flask(__name__)
-container_manager = Container()
+container_manager = ContainerManager()
 
 # Define routes for starting, stopping, and resetting containers
 
@@ -97,7 +116,6 @@ def containers_status():
             'status': container.status
         }
     return jsonify(containers_status)
-
 
 
 @app.route('/')
