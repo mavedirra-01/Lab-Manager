@@ -76,6 +76,19 @@ class Container:
         self.stop()
         time.sleep(2)
         self.start()
+    
+    def update_containers(self):
+        cmd = "docker ps -a --format '{{.Names}} {{.Image}} {{.Status}}' | awk '{print $1, $2, $3}'"
+        output = subprocess.check_output(cmd, shell=True).decode('utf-8')
+        for line in output.splitlines():
+            name, image, status = line.split()
+            self.containers[name] = Container(name, image)
+        if 'Exited' in output.decode():
+            return "Exited"
+        if not output.decode():
+            return "Not Started"
+        else:
+            return "Running"
 
 
 
@@ -83,8 +96,6 @@ class Container:
 
 app = Flask(__name__)
 # Define routes for starting, stopping, and resetting containers
-containers = {}
-
 @app.route('/start_container/<container_name>', methods=['POST'])
 def start_container(container_name):
     if container_name in containers:
