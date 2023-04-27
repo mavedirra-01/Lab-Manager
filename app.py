@@ -126,12 +126,18 @@ def containers_status():
 
 @app.route('/')
 def index():
-    containers_status = {}
+    containers_list = []
     for name, container in container_manager.containers.items():
-        containers_status[name] = {
-            'status': container.status
-        }
-    return render_template('index.html', containers=containers_status, containers_list=container_manager.containers)
+        containers_list.append(
+            {'name': name, 'image': container.image, 'status': container.status})
+    return render_template('index.html', containers=containers_status, containers_list=containers_list)
+
+    # containers_status = {}
+    # for name, container in container_manager.containers.items():
+    #     containers_status[name] = {
+    #         'status': container.status
+    #     }
+    # return render_template('index.html', containers=containers_status, containers_list=container_manager.containers)
 
 
 

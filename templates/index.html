@@ -98,10 +98,10 @@
                 </tr>
             </thead>
             <tbody id="table-body">
-                {% for name, container in containers_list.items() %}
+                {% for container in containers_list %}
                 <tr>
-                    <td>{{ name }}</td>
-                    <td>{{ container.get_status() }}</td>
+                    <td>{{ container.name }}</td>
+                    <td>{{ container.status }}</td>
                     <td>
                         <form action="{{ url_for('start_container', container_name=name) }}" method="POST">
                             <button id="start-button" class="btn btn-success start-button"
