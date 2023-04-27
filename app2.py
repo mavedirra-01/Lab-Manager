@@ -102,15 +102,25 @@ def terminal(container_name):
     return redirect(f"http://192.168.2.136:{port}")
 
 
+# @app.route('/containers_status')
+# def containers_status():
+#     containers = client.containers.list()
+#     containers_status = {}
+#     for container in containers:
+#         containers_status[container.name] = container.status
+#     return containers_status
+
 @app.route('/containers_status')
 def containers_status():
     global containers
-    # containers = client.containers.list()
-    containers_status = {}
-    # for container in containers:
-    containers[container.name].get_status()
-        # containers_status[container.name] = container.status
-    #return containers_status
+    for container in client.containers.list(all=True):
+            if container.name not in containers:
+                containers[container.name] = Container(
+                    container.name, container.image.tags[0])
+                containers[container.name].get_status()
+            else:
+                containers[container.name].get_status()
+    return render_template('index.html', containers_list=containers.values())
 
 
 @app.route('/')
@@ -126,5 +136,9 @@ def index():
     return render_template('index.html', containers_list=containers.values())
 
 
+
+
+
+# Define a class for managing VMs
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
