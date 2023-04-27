@@ -119,25 +119,15 @@ def containers_status():
     containers_status = {}
     for name, container in container_manager.containers.items():
         containers_status[name] = {
-            'status': container.status
+            'status': container.get_status()
         }
-    return containers_status
+    return jsonify(containers_status)
 
 
 @app.route('/')
 def index():
-    containers_list = []
-    for name, container in container_manager.containers.items():
-        containers_list.append(
-            {'name': name, 'image': container.image, 'status': container.status})
-    return render_template('index.html', containers=containers_status, containers_list=containers_list)
+    return render_template('index.html', containers_list=container_manager.containers)
 
-    # containers_status = {}
-    # for name, container in container_manager.containers.items():
-    #     containers_status[name] = {
-    #         'status': container.status
-    #     }
-    # return render_template('index.html', containers=containers_status, containers_list=container_manager.containers)
 
 
 
