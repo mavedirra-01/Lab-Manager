@@ -93,7 +93,6 @@ def get_containers():
 
 
 app = Flask(__name__)
-containers = get_containers()
 # Define routes for starting, stopping, and resetting containers
 
 
@@ -143,6 +142,13 @@ def containers_status():
     return jsonify(containers_list)
 
 
+@app.route('/')
+def index():
+    containers = Container.get_containers()
+    return render_template('index.html', containers_list=containers)
+
+
+
 # @app.route('/containers_status')
 # def containers_status():
 #     output = subprocess.check_output(
@@ -159,20 +165,6 @@ def containers_status():
 #         containers_list.append(container)
 #     return jsonify(containers_list)
 
-
-@app.route('/')
-def index():
-    client = docker.from_env()
-    containers = client.containers.list()
-    containers_list = []
-    for container in containers:
-        container_dict = {
-            'name': container.name,
-            'image': container.image.tags[0],
-            'status': container.status
-        }
-        containers_list.append(container_dict)
-    return render_template('index.html', containers_list=containers_list)
 
 # @app.route('/')
 # def index():

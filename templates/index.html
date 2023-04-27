@@ -107,16 +107,16 @@
                     <td>
                         <form action="{{ url_for('start_container', container_name=container.name) }}" method="POST">
                             <button id="start-button" class="btn btn-success start-button"
-                                data-container="{{ container.name }}">Start</button>
+                                data-container-name="{{ container.name }}">Start</button>
                         </form>
                         <form action="{{ url_for('stop_container', container_name=container.name) }}" method="POST">
-                            <button id="stop-button" class="btn btn-danger stop-button"
-                                data-container="{{ container.name }}">Stop</button>
+                            <button id="stop-button" class="btn btn-danger stop-button" data-container-name="{{ container.name }}">Stop</button>
                         </form>
                         <form action="{{ url_for('reset_container', container_name=container.name) }}" method="POST">
                             <button id="reset-button" class="btn btn-warning reset-button"
-                                data-container="{{ container.name }}">Reset</button>
+                                data-container-name="{{ container.name }}">Reset</button>
                         </form>
+
                     </td>
                     <td>
                         <form action="{{ url_for('terminal', container_name=container.name) }}" method="POST">
