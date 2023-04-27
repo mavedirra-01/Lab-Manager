@@ -76,6 +76,11 @@ class Container:
         self.stop()
         time.sleep(2)
         self.start()
+
+    def get_info(self):
+        cmd = f"docker inspect --format='{{{{.State.Status}}}}' {self.name}"
+        status = subprocess.check_output(cmd, shell=True).decode().strip()
+        return {'name': self.name, 'image': self.image, 'status': status}
     
 
 def get_containers():
@@ -131,21 +136,18 @@ def terminal(container_name):
 @app.route('/containers_status')
 def containers_status():
     containers = []
-    for container_info in get_containers():
-        container = Container(container_info['name'], container_info['image'])
-        containers.append(container)
-    containers_list = [
-        {'name': container.name, 'image': container.image, 'status': container.status}
-        for container in containers
-    ]
-    return jsonify(containers_list)
+    for container in get_containers():
+        containers.append(container.get_info())
+    return jsonify(containers)
+
 
 
 @app.route('/')
 def index():
-    global containers  # Make sure to access the global list
-    containers = get_containers()  # Update the containers list
+    global containers
+    containers = get_containers()
     return render_template('index.html', containers_list=containers)
+
 
 
 
