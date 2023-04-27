@@ -80,7 +80,7 @@ class Container:
         output = subprocess.check_output(
             ['docker', 'ps', '-a', '--format', '{{.Names}} {{.Image}} {{.Status}}'])
         lines = output.decode('utf-8').strip().split('\n')
-        containers = []
+        containers = {}
         for line in lines[1:]:
             name, image, status = line.split()
             containers.append({
