@@ -115,7 +115,7 @@ def index():
         if container.name not in containers:
             containers[container.name] = Container(
                 container.name, container.image.tags[0])
-        status = containers[container.name].status
+        status = Container.get_status()
         containers_list.append({
             'name': container.name,
             'image': container.image.tags[0],
