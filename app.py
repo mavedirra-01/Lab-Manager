@@ -45,8 +45,12 @@ class Container:
 
     def start(self):
         cmd = f"docker run -d --hostname {self.name} --name {self.name} {self.image}"
-        subprocess.run(cmd.split())
-    
+        cmd_failed = f"docker start {self.name}"
+        try:
+            subprocess.run(cmd.split())
+        except subprocess.CalledProcessError:
+            subprocess.run(cmd_failed.split())
+
     def remove(self):
         cmd = f"docker rm {self.name}"
         subprocess.run(cmd.split())
@@ -54,8 +58,6 @@ class Container:
     def stop(self):
         cmd = f"docker stop {self.name}"
         subprocess.run(cmd.split())
-        time.sleep(0.2)
-        self.remove()
 
     def reset(self):
         self.stop()
