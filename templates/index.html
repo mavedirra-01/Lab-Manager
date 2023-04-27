@@ -101,7 +101,7 @@
                 {% for name, container in containers_list.items() %}
                 <tr>
                     <td>{{ name }}</td>
-                    <td>{{ container.get_status() }}</td>
+                    <td>{{ ContainerManager.get_status() }}</td>
                     <td>
                         <form action="{{ url_for('start_container', container_name=name) }}" method="POST">
                             <button id="start-button" class="btn btn-success start-button"
