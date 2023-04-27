@@ -141,12 +141,12 @@ def containers_status():
     return jsonify(containers_list)
 
 
-
-
 @app.route('/')
 def index():
-    containers_list = get_containers()
-    return render_template('index.html', containers_list=containers_list)
+    global containers  # Make sure to access the global list
+    containers = get_containers()  # Update the containers list
+    return render_template('index.html', containers_list=containers)
+
 
 
 
