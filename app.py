@@ -115,7 +115,7 @@ def terminal(container_name):
 @app.route('/containers_status')
 def containers_status():
     containers_status = {}
-    for name, container in container_manager.containers.items():
+    for name, container in containers.items():
         containers_status[name] = {
             'status': container.get_status()
         }
@@ -125,11 +125,11 @@ def containers_status():
 @app.route('/')
 def index():
     containers_status = {}
-    for name, container in container_manager.containers.items():
+    for name, container in containers.items():
         containers_status[name] = {
             'status': container.status
         }
-    return render_template('index.html', containers=containers_status, containers_list=container_manager.containers)
+    return render_template('index.html', containers=containers_status, containers_list=containers)
 
 
 
