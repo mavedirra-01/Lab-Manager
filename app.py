@@ -85,17 +85,17 @@ def get_containers():
     lines = output.decode('utf-8').strip().split('\n')
     for line in lines[1:]:
         name, image, status = line.split()
-        containers.append({
-            'name': name,
-            'image': image,
-            'status': status
-        })
+        container = Container(name, image)
+        container.status = status
+        containers.append(container)
     return containers
+
 
 
 
 app = Flask(__name__)
 # Define routes for starting, stopping, and resetting containers
+containers = []
 
 @app.route('/start_container/<container_name>', methods=['POST'])
 def start_container(container_name):
