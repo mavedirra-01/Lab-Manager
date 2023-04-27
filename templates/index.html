@@ -127,7 +127,7 @@
     <script>
         function updateTable() {
             $.ajax({
-                url: "{{ url_for('get_containers') }}",
+                url: "{{ url_for('containers_status') }}",
                 type: "GET",
                 success: function (response) {
                     // Update the table body with the new data
