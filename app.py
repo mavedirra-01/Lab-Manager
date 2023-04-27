@@ -81,7 +81,6 @@ def get_containers():
     output = subprocess.check_output(
         ['docker', 'ps', '-a', '--format', '{{.Names}} {{.Image}}'])
     lines = output.decode('utf-8').strip().split('\n')
-    containers = []
     for line in lines[1:]:
         name, image, status = line.split()
         containers.append({
@@ -93,7 +92,7 @@ def get_containers():
 
 app = Flask(__name__)
 # Define routes for starting, stopping, and resetting containers
-
+containers = []
 
 @app.route('/start_container/<container_name>', methods=['POST'])
 def start_container(container_name):
