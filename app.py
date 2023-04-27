@@ -29,6 +29,7 @@ import subprocess
 import random
 from threading import Thread
 import time
+import docker
 
 
 
@@ -129,32 +130,59 @@ def terminal(container_name):
 
 @app.route('/containers_status')
 def containers_status():
-    output = subprocess.check_output(
-        'docker ps -a --format "{{.Names}} {{.Image}} {{.Status}}" | awk \'{print $1, $2, $3}\'', shell=True, text=True)
-    lines = output.strip().split('\n')
+    client = docker.from_env()
+    containers = client.containers.list()
     containers_list = []
-    for line in lines[1:]:
-        name, image, status = line.split()
-        container = {
-            'name': name,
-            'image': image,
-            'status': status
+    for container in containers:
+        container_dict = {
+            'name': container.name,
+            'image': container.image.tags[0],
+            'status': container.status
         }
-        containers_list.append(container)
+        containers_list.append(container_dict)
     return jsonify(containers_list)
 
 
+# @app.route('/containers_status')
+# def containers_status():
+#     output = subprocess.check_output(
+#         'docker ps -a --format "{{.Names}} {{.Image}} {{.Status}}" | awk \'{print $1, $2, $3}\'', shell=True, text=True)
+#     lines = output.strip().split('\n')
+#     containers_list = []
+#     for line in lines[1:]:
+#         name, image, status = line.split()
+#         container = {
+#             'name': name,
+#             'image': image,
+#             'status': status
+#         }
+#         containers_list.append(container)
+#     return jsonify(containers_list)
 
 
 @app.route('/')
 def index():
-    containers_status = {}
+    client = docker.from_env()
+    containers = client.containers.list()
+    containers_list = []
     for container in containers:
-        containers_status[container['name']] = {
-            'status': container['status']
+        container_dict = {
+            'name': container.name,
+            'image': container.image.tags[0],
+            'status': container.status
         }
+        containers_list.append(container_dict)
+    return render_template('index.html', containers_list=containers_list)
 
-    return render_template('index.html', containers=containers_status, containers_list=containers)
+# @app.route('/')
+# def index():
+#     containers_status = {}
+#     for container in containers:
+#         containers_status[container['name']] = {
+#             'status': container['status']
+#         }
+
+#     return render_template('index.html', containers=containers_status, containers_list=containers)
 
 
 
