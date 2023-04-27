@@ -2,8 +2,33 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask_sockets import Sockets
 import subprocess
 import random
+from threading import Thread
 import time
 
+
+class ContainerManager:
+    def __init__(self):
+        self.containers = {}
+        self.update_containers()
+        self.thread = Thread(target=self.update_containers_thread)
+        self.thread.daemon = True
+        self.thread.start()
+
+    def update_containers(self):
+        cmd = "docker ps -a --format '{{.Names}} {{.Image}} {{.Status}}'"
+        output = subprocess.check_output(cmd, shell=True).decode('utf-8')
+        for line in output.splitlines():
+            name, image, status = line.split()
+            if name not in self.containers:
+                self.containers[name] = Container(name, image)
+            else:
+                self.containers[name].image = image
+                self.containers[name].status = status
+
+    def update_containers_thread(self):
+        while True:
+            self.update_containers()
+            time.sleep(60)
 
 class Container:
     def __init__(self, name, image):
@@ -36,45 +61,49 @@ class Container:
         self.start()
 
 
-# Get a list of all containers
-output = subprocess.check_output(
-    'docker ps -a --format "{{.Names}} {{.Image}}"', shell=True)
-output = output.decode().strip()
-if output:
-    container_list = output.split('\n')
-else:
-    container_list = []
+# # Get a list of all containers
+# output = subprocess.check_output(
+#     'docker ps -a --format "{{.Names}} {{.Image}}"', shell=True)
+# output = output.decode().strip()
+# if output:
+#     container_list = output.split('\n')
+# else:
+#     container_list = []
 
-# Create instances of the Container class for each container
-containers = {}
-for container_info in container_list:
-    name, image = container_info.split()
-    containers[name] = Container(name, image)
-
+# # Create instances of the Container class for each container
+# containers = {}
+# for container_info in container_list:
+#     name, image = container_info.split()
+#     containers[name] = Container(name, image)
 
 
 app = Flask(__name__)
+container_manager = ContainerManager()
 
 # Define routes for starting, stopping, and resetting containers
+
+
 @app.route('/start_container/<container_name>', methods=['POST'])
 def start_container(container_name):
-    if container_name in containers:
-        containers[container_name].start()
+    if container_name in container_manager.containers:
+        container_manager.containers[container_name].start()
     return redirect(url_for('index'))
+
+# Define routes for stopping and resetting containers
 
 
 @app.route('/stop_container/<container_name>', methods=['POST'])
 def stop_container(container_name):
-    if container_name in containers:
-        containers[container_name].stop()
+    if container_name in container_manager.containers:
+        container_manager.containers[container_name].stop()
     time.sleep(0.5)
     return redirect(url_for('index'))
 
 
 @app.route('/reset_container/<container_name>', methods=['POST'])
 def reset_container(container_name):
-    if container_name in containers:
-        containers[container_name].reset()
+    if container_name in container_manager.containers:
+        container_manager.containers[container_name].reset()
     return redirect(url_for('index'))
 
 
@@ -90,11 +119,57 @@ def terminal(container_name):
 @app.route('/')
 def index():
     containers_status = {}
-    for name, container in containers.items():
+    for name, container in container_manager.containers.items():
         containers_status[name] = {
-            'status': container.get_status()
+            'status': container.status
         }
-    return render_template('index.html', containers=containers_status, containers_list=containers)
+    return render_template('index.html', containers=containers_status, containers_list=container_manager.containers)
+
+
+
+
+# app = Flask(__name__)
+
+# # Define routes for starting, stopping, and resetting containers
+# @app.route('/start_container/<container_name>', methods=['POST'])
+# def start_container(container_name):
+#     if container_name in containers:
+#         containers[container_name].start()
+#     return redirect(url_for('index'))
+
+
+# @app.route('/stop_container/<container_name>', methods=['POST'])
+# def stop_container(container_name):
+#     if container_name in containers:
+#         containers[container_name].stop()
+#     time.sleep(0.5)
+#     return redirect(url_for('index'))
+
+
+# @app.route('/reset_container/<container_name>', methods=['POST'])
+# def reset_container(container_name):
+#     if container_name in containers:
+#         containers[container_name].reset()
+#     return redirect(url_for('index'))
+
+
+# @app.route('/terminal/<container_name>/', methods=['POST'])
+# def terminal(container_name):
+#     port = random.randint(10001, 65535)
+#     ttyd_command = f"ttyd -p {port} docker exec -it {container_name} /bin/bash"
+#     subprocess.Popen(ttyd_command.split())
+#     time.sleep(1)
+#     return redirect(f"http://192.168.2.136:{port}")
+
+
+# @app.route('/')
+# def index():
+#     containers_status = {}
+#     for name, container in containers.items():
+#         containers_status[name] = {
+#             'status': container.get_status()
+#         }
+#     return render_template('index.html', containers=containers_status, containers_list=containers)
 
     
 
