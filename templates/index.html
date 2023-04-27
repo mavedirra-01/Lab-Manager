@@ -92,16 +92,18 @@
             <thead>
                 <tr>
                     <th>Name</th>
+                    <th>Image</th>
                     <th>Status</th>
                     <th>Action</th>
                     <th>Connect</th>
                 </tr>
             </thead>
             <tbody id="table-body">
-                {% for name, container in containers_list.items() %}
+                {% for name, image, status in containers_list %}
                 <tr id="{{ name }}">
                     <td>{{ name }}</td>
-                    <td class="status">{{ container.status }}</td>
+                    <td>{{ image }}</td>
+                    <td class="status">{{ status }}</td>
                     <td>
                         <form action="{{ url_for('start_container', container_name=name) }}" method="POST">
                             <button id="start-button" class="btn btn-success start-button"
@@ -126,12 +128,13 @@
                 {% endfor %}
                 {% if not containers_list %}
                 <tr>
-                    <td colspan="4" class="text-center">No containers found</td>
+                    <td colspan="5" class="text-center">No containers found</td>
                 </tr>
                 {% endif %}
             </tbody>
         </table>
     </main>
+
 
 
     <footer class="container-fluid bg-dark text-white py-3 fixed-bottom">
