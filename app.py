@@ -75,10 +75,24 @@ class Container:
         self.stop()
         time.sleep(2)
         self.start()
+    
+    def get_containers():
+        output = subprocess.check_output(
+            ['docker', 'ps', '-a', '--format', '{{.Names}} {{.Image}} {{.Status}}'])
+        lines = output.decode('utf-8').strip().split('\n')
+        containers = []
+        for line in lines[1:]:
+            name, image, status = line.split()
+            containers.append({
+                'name': name,
+                'image': image,
+                'status': status
+            })
+        return containers
 
 
 app = Flask(__name__)
-containers = {}
+containers = Container.get_containers()
 
 # Define routes for starting, stopping, and resetting containers
 
