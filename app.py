@@ -20,7 +20,7 @@ class ContainerManager:
             self.containers[name] = Container(name, image)
             # else:
             #     self.containers[name].image = image
-        return containers
+        return self.containers
 
     def update_containers_thread(self):
         self.update_containers()
