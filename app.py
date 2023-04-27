@@ -76,17 +76,13 @@ class Container:
         self.stop()
         time.sleep(2)
         self.start()
-
-    def get_info(self):
-        cmd = f"docker inspect --format='{{{{.State.Status}}}}' {self.name}"
-        status = subprocess.check_output(cmd, shell=True).decode().strip()
-        return {'name': self.name, 'image': self.image, 'status': status}
     
 
 def get_containers():
     containers = []
-    output = subprocess.check_output(
-        ['docker', 'ps', '-a', '--format', '{{.Names}} {{.Image}} {{.Status}}'])
+    cmd = ['docker', 'ps', '-a', '--format', '{{.Names}} {{.Image}} {{.Status}}']
+    output = subprocess.check_output(cmd, shell=True)
+    subprocess.run(cmd.split())
     lines = output.decode('utf-8').strip().split('\n')
     for line in lines[1:]:
         name, image, status = line.split()
@@ -132,13 +128,6 @@ def terminal(container_name):
     time.sleep(1)
     return redirect(f"http://192.168.2.136:{port}")
 
-
-@app.route('/containers_status')
-def containers_status():
-    containers = []
-    for container in get_containers():
-        containers.append(container.get_info())
-    return jsonify(containers)
 
 
 
