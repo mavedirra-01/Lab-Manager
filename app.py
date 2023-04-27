@@ -24,7 +24,6 @@ class ContainerManager:
                 self.containers[name] = Container(name, image)
             else:
                 self.containers[name].image = image
-                # self.containers[name].status = status
 
     def update_containers_thread(self):
         self.update_containers()

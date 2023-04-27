@@ -10,40 +10,49 @@
     <!-- Bootstrap Icons CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <style>
-    body {
-        background-color: #121212;
-        color: #f1f1f1;
-    }
-    /* Customize the color of the icons */
-    .bi {
-        color: #f1f1f1;
-    }
-    /* Customize the background color of the table */
-    table {
-        background-color: #1e1e1e;
-    }
-    /* Customize the color of the table headers */
-    th {
-        color: #f1f1f1;
-    }
-    /* Customize the color of the table rows */
-    tr {
-        color: #c0c0c0;
-    }
-    /* Customize the color of the buttons */
-    .btn-primary, .btn-danger, .btn-warning, .btn-success {
-        color: #f1f1f1;
-        background-color: #3c3c3c;
-    }
-    /* Customize the color of the footer */
-    .footer {
-        background-color: #1e1e1e;
-        color: #c0c0c0;
-    }
-    table.table-hover tbody tr:hover {
-        background-color: #c0c0c0;
-    }
+        body {
+            background-color: #121212;
+            color: #f1f1f1;
+        }
 
+        /* Customize the color of the icons */
+        .bi {
+            color: #f1f1f1;
+        }
+
+        /* Customize the background color of the table */
+        table {
+            background-color: #1e1e1e;
+        }
+
+        /* Customize the color of the table headers */
+        th {
+            color: #f1f1f1;
+        }
+
+        /* Customize the color of the table rows */
+        tr {
+            color: #c0c0c0;
+        }
+
+        /* Customize the color of the buttons */
+        .btn-primary,
+        .btn-danger,
+        .btn-warning,
+        .btn-success {
+            color: #f1f1f1;
+            background-color: #3c3c3c;
+        }
+
+        /* Customize the color of the footer */
+        .footer {
+            background-color: #1e1e1e;
+            color: #c0c0c0;
+        }
+
+        table.table-hover tbody tr:hover {
+            background-color: #c0c0c0;
+        }
     </style>
 </head>
 
@@ -95,20 +104,24 @@
                     <td>{{ container.get_status() }}</td>
                     <td>
                         <form action="{{ url_for('start_container', container_name=name) }}" method="POST">
-                            <button class="btn btn-primary me-2"><i class="bi-play"></i></button>
+                            <button id="start-button" class="btn btn-success start-button"
+                                data-container="{{container_name}}">Start</button>
                         </form>
                         <form action="{{ url_for('stop_container', container_name=name) }}" method="POST">
-                            <button class="btn btn-danger me-2"><i class="bi-stop"></i></button>
+                            <button id="stop-button" class="btn btn-danger stop-button"
+                                data-container="{{container_name}}">Stop</button>
                         </form>
                         <form action="{{ url_for('reset_container', container_name=name) }}" method="POST">
-                            <button class="btn btn-warning"><i class="bi-arrow-counterclockwise"></i></button>
+                            <button id="reset-button" class="btn btn-warning reset-button"
+                                data-container="{{container_name}}">Reset</button>
                         </form>
                     </td>
                     <td>
                         {% if container.get_status() == 'Running' %}
                         <form id="terminal-form-{{ name }}" action="{{ url_for('terminal', container_name=name) }}"
                             method="POST" target="_blank">
-                            <button class="btn btn-success"><i class="bi-terminal"></i></button>
+                            <button id="connect-button" class="btn btn-success bi-terminal"
+                                data-container="{{container_name}}"></button>
                             <input type="hidden" name="port" value="{{ port }}">
                         </form>
                         {% endif %}
