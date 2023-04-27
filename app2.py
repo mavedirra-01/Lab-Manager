@@ -29,11 +29,10 @@ class Container:
         cmd_failed = f"docker start {self.name}"
         try:
             output = subprocess.check_output(cmd, shell=True)
-            # subprocess.run(cmd.split())
             if 'Conflict' in output.decode():
                 subprocess.run(cmd_failed.split())
         except subprocess.CalledProcessError:
-            pass
+            subprocess.run(cmd_failed.split())
 
     def remove(self):
         try:
