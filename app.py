@@ -121,7 +121,7 @@ def containers_status():
         containers_status[name] = {
             'status': container.status
         }
-    return redirect(url_for('index'))
+    return render_template('index.html', containers=containers_status, containers_list=container_manager.containers)
 
 
 @app.route('/')
