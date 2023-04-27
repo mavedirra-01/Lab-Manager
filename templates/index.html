@@ -103,7 +103,7 @@
                 <tr data-container-name="{{ container.name }}">
                     <td>{{ container.name }}</td>
                     <td>{{ container.image }}</td>
-                    <td class="status">{{ container.status }}</td>
+                    <td class="status">{{ container.get_status }}</td>
                     <td>
                         <form action="{{ url_for('start_container', container_name=container.name) }}" method="POST">
                             <button id="start-button" class="btn btn-success start-button"

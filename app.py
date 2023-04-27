@@ -79,7 +79,7 @@ class Container:
     
 def get_containers():
     output = subprocess.check_output(
-        ['docker', 'ps', '-a', '--format', '{{.Names}} {{.Image}} {{.Status}}'])
+        ['docker', 'ps', '-a', '--format', '{{.Names}} {{.Image}}'])
     lines = output.decode('utf-8').strip().split('\n')
     containers = []
     for line in lines[1:]:
@@ -87,7 +87,6 @@ def get_containers():
         containers.append({
             'name': name,
             'image': image,
-            'status': status
         })
     return containers
 
@@ -129,14 +128,11 @@ def terminal(container_name):
 
 @app.route('/containers_status')
 def containers_status():
-    client = docker.from_env()
-    containers = client.containers.list()
     containers_list = []
     for container in containers:
         container_dict = {
             'name': container.name,
             'image': container.image.tags[0],
-            'status': container.status
         }
         containers_list.append(container_dict)
     return jsonify(containers_list)
@@ -144,8 +140,8 @@ def containers_status():
 
 @app.route('/')
 def index():
-    containers = get_containers()
-    return render_template('index.html', containers_list=containers)
+    containers_list = get_containers()
+    return render_template('index.html', containers_list=containers_list)
 
 
 
