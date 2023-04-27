@@ -53,28 +53,30 @@
         <button id="refresh-btn" class="btn btn-primary"><i class="bi-arrow-clockwise"></i> Refresh</button>
     </header>
     <script>
+        var refreshBtn = document.getElementById("refresh-btn");
         refreshBtn.addEventListener("click", function () {
-                var xhr = new XMLHttpRequest();
-                xhr.open('GET', '/update-containers', true);
-                xhr.onload = function () {
-                    if (xhr.status === 200) {
-                        var containers = JSON.parse(xhr.responseText);
-                        var tableBody = document.getElementById("table-body");
-                        tableBody.innerHTML = "";
-                        for (var name in containers) {
-                            var row = "<tr>";
-                            row += "<td>" + name + "</td>";
-                            row += "<td>" + containers[name].status + "</td>";
-                            row += "<td>...</td>";
-                            row += "<td>...</td>";
-                            row += "</tr>";
-                            tableBody.innerHTML += row;
-                        }
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/update-containers', true);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    var containers = JSON.parse(xhr.responseText);
+                    var tableBody = document.getElementById("table-body");
+                    tableBody.innerHTML = "";
+                    for (var name in containers) {
+                        var row = "<tr>";
+                        row += "<td>" + name + "</td>";
+                        row += "<td>" + containers[name].status + "</td>";
+                        row += "<td>...</td>";
+                        row += "<td>...</td>";
+                        row += "</tr>";
+                        tableBody.innerHTML += row;
                     }
-                };
-                xhr.send();
-            });
+                }
+            };
+            xhr.send();
+        });
     </script>
+
     <main class="container my-5">
         <h2 class="mb-4">Docker Containers</h2>
         <table class="table table-hover">
