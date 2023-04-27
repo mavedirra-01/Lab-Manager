@@ -102,7 +102,7 @@ def terminal(container_name):
 @app.route('/update-containers')
 def update_containers_endpoint():
     containers = container_manager.update_containers_thread()
-    return jsonify(containers), 200
+    return (containers), 200
 
 
 @app.route('/')
