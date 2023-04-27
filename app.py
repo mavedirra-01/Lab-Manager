@@ -55,11 +55,6 @@ for container_info in container_list:
 
 app = Flask(__name__)
 
-
-containers = {
-    'nginx': Container('nginx', 'nginx:latest'),
-}
-
 # Define routes for starting, stopping, and resetting containers
 @app.route('/start_container/<container_name>', methods=['POST'])
 def start_container(container_name):
