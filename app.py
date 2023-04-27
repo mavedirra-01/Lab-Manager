@@ -46,10 +46,13 @@ class Container:
     def start(self):
         cmd = f"docker run -d --hostname {self.name} --name {self.name} {self.image}"
         cmd_failed = f"docker start {self.name}"
-        output = subprocess.check_output(cmd, shell=True)
-        subprocess.run(cmd.split())
-        if 'Conflict' in output.decode():
-            subprocess.run(cmd_failed.split())
+        try:
+            output = subprocess.check_output(cmd, shell=True)
+            subprocess.run(cmd.split())
+            if 'Conflict' in output.decode():
+                subprocess.run(cmd_failed.split())
+        except subprocess.CalledProcessError:
+            pass
 
     def remove(self):
         cmd = f"docker rm {self.name}"
