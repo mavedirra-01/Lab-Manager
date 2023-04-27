@@ -144,6 +144,23 @@
 
     <!-- Bootstrap Bundle JS (includes Popper.js) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function updateContainerTable() {
+            fetch('/containers_status')
+                .then(response => response.json())
+                .then(data => {
+                    const containerTable = document.getElementById('container-table');
+                    Object.keys(data).forEach(name => {
+                        const row = containerTable.querySelector(`tr[data-container-name="${name}"]`);
+                        if (row) {
+                            row.querySelector('.status').textContent = data[name].status;
+                        }
+                    });
+                });
+        }
+
+        setInterval(updateContainerTable, 5000);
+    </script>
 </body>
 
 </html>
