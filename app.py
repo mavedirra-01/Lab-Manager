@@ -26,7 +26,7 @@ class ContainerManager:
                 self.containers[name].status = status
 
     def update_containers_thread(self):
-        self.update_containers()
+        threading.Thread(target=self.update_containers).start()
 
 class Container:
     def __init__(self, name, image):
