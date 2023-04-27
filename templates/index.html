@@ -124,22 +124,6 @@
         <div class="text-center">Containers Manager &copy; 2023</div>
     </footer>
 
-    <script>
-        function updateTable() {
-            $.ajax({
-                url: "{{ url_for('containers_status') }}",
-                type: "GET",
-                success: function (response) {
-                    // Update the table body with the new data
-                    $("#table-body").html(response);
-                }
-            });
-        }
-
-        // Update the table every 5 seconds
-        setInterval(updateTable, 5000);
-    </script>
-
     <!-- Bootstrap Bundle JS (includes Popper.js) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
