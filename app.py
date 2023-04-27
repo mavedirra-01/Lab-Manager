@@ -121,7 +121,7 @@ def containers_status():
         containers_status[name] = {
             'status': container.status
         }
-    return jsonify(containers_status)
+    return containers_status
 
 
 @app.route('/')
