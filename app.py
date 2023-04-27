@@ -9,10 +9,11 @@ import time
 class ContainerManager:
     def __init__(self):
         self.containers = {}
-        self.update_containers()
-        self.thread = Thread(target=self.update_containers_thread)
-        self.thread.daemon = True
-        self.thread.start()
+        # self.update_containers()
+        # # self.thread = Thread(target=self.update_containers_thread)
+        # # self.thread.daemon = True
+        # # self.thread.start()
+
 
     def update_containers(self):
         cmd = "docker ps -a --format '{{.Names}} {{.Image}} {{.Status}}' | awk '{print $1, $2, $3}'"
@@ -24,7 +25,6 @@ class ContainerManager:
             else:
                 self.containers[name].image = image
                 self.containers[name].status = status
-        print(output)
 
     def update_containers_thread(self):
         self.update_containers()
@@ -101,8 +101,8 @@ def terminal(container_name):
 
 @app.route('/update-containers')
 def update_containers_endpoint():
-    container_manager.update_containers_thread()
-    return '', 204
+    containers = container_manager.update_containers_thread()
+    return jsonify(containers), 200
 
 
 @app.route('/')
