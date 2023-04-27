@@ -130,7 +130,14 @@ def terminal(container_name):
 
 @app.route('/containers_status')
 def containers_status():
-    containers_list = get_containers()
+    containers = []
+    for container_info in get_containers():
+        container = Container(container_info['name'], container_info['image'])
+        containers.append(container)
+    containers_list = [
+        {'name': container.name, 'image': container.image, 'status': container.status}
+        for container in containers
+    ]
     return jsonify(containers_list)
 
 
