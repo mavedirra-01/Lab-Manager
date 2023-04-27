@@ -25,7 +25,6 @@ class ContainerManager:
             else:
                 self.containers[name].image = image
                 self.containers[name].status = status
-        return jsonify(containers_status)
 
     def update_containers_thread(self):
         self.update_containers()
@@ -102,8 +101,14 @@ def terminal(container_name):
 
 @app.route('/update-containers')
 def update_containers_endpoint():
-    containers = container_manager.update_containers_thread()
-    return 200
+    container_manager.update_containers_thread()
+    containers_status = {}
+    for name, container in container_manager.containers.items():
+        containers_status[name] = {
+            'status': container.status
+        }
+    return jsonify(containers_status)
+
 
 
 @app.route('/')
