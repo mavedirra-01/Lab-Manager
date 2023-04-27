@@ -116,7 +116,7 @@ def terminal(container_name):
     return redirect(f"http://192.168.2.136:{port}")
 
 
-@app.route('/containers')
+@app.route('/containers_status')
 def get_containers_status():
     global containers
     containers_status = {}
