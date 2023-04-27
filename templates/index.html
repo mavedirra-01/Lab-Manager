@@ -99,29 +99,29 @@
                 </tr>
             </thead>
             <tbody id="table-body">
-                {% for name, image, status in containers_list %}
-                <tr id="{{ name }}">
-                    <td>{{ name }}</td>
-                    <td>{{ image }}</td>
-                    <td class="status">{{ status }}</td>
+                {% for container in containers_list %}
+                <tr data-container-name="{{ container.name }}">
+                    <td>{{ container.name }}</td>
+                    <td>{{ container.image }}</td>
+                    <td class="status">{{ container.status }}</td>
                     <td>
-                        <form action="{{ url_for('start_container', container_name=name) }}" method="POST">
+                        <form action="{{ url_for('start_container', container_name=container.name) }}" method="POST">
                             <button id="start-button" class="btn btn-success start-button"
-                                data-container="{{ container_name }}">Start</button>
+                                data-container="{{ container.name }}">Start</button>
                         </form>
-                        <form action="{{ url_for('stop_container', container_name=name) }}" method="POST">
+                        <form action="{{ url_for('stop_container', container_name=container.name) }}" method="POST">
                             <button id="stop-button" class="btn btn-danger stop-button"
-                                data-container="{{ container_name }}">Stop</button>
+                                data-container="{{ container.name }}">Stop</button>
                         </form>
-                        <form action="{{ url_for('reset_container', container_name=name) }}" method="POST">
+                        <form action="{{ url_for('reset_container', container_name=container.name) }}" method="POST">
                             <button id="reset-button" class="btn btn-warning reset-button"
-                                data-container="{{ container_name }}">Reset</button>
+                                data-container="{{ container.name }}">Reset</button>
                         </form>
                     </td>
                     <td>
-                        <form action="{{ url_for('terminal', container_name=name) }}" method="POST">
+                        <form action="{{ url_for('terminal', container_name=container.name) }}" method="POST">
                             <button id="terminal-button" class="btn btn-primary terminal-button"
-                                data-container="{{ container_name }}">Terminal</button>
+                                data-container="{{ container.name }}">Terminal</button>
                         </form>
                     </td>
                 </tr>
@@ -134,6 +134,7 @@
             </tbody>
         </table>
     </main>
+
 
 
 

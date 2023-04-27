@@ -130,13 +130,20 @@ def terminal(container_name):
 
 @app.route('/containers_status')
 def containers_status():
-    containers_status = {}
-    for name, container in containers.items():
-        container.status = container.get_status()  # update the status attribute
-        containers_status[name] = {
-            'status': container.status  # use the updated status attribute
+    output = subprocess.check_output(
+        'docker ps -a --format "{{.Names}} {{.Image}} {{.Status}}" | awk \'{print $1, $2, $3}\'', shell=True, text=True)
+    lines = output.strip().split('\n')
+    containers_list = []
+    for line in lines[1:]:
+        name, image, status = line.split()
+        container = {
+            'name': name,
+            'image': image,
+            'status': status
         }
-    return jsonify(containers_status)
+        containers_list.append(container)
+    return jsonify(containers_list)
+
 
 
 
