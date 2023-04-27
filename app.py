@@ -4,37 +4,6 @@ import subprocess
 import random
 import time
 
-
-class VM:
-    def __init__(self, name):
-        self.name = name
-        self.status = self.get_status()
-
-    def get_status(self):
-        cmd = f"quickemu info {self.name} | grep 'Status:' | awk '{{print $2}}'"
-        try:
-            output = subprocess.check_output(cmd, shell=True)
-            return output.decode().strip()
-        except subprocess.CalledProcessError:
-            return "Not started"
-
-    def start(self):
-        cmd = f"quickemu start {self.name}"
-        subprocess.run(cmd.split())
-
-    def stop(self):
-        cmd = f"quickemu stop {self.name}"
-        subprocess.run(cmd.split())
-
-    def reset(self):
-        self.stop()
-        cmd = f"quickemu rollback {self.name}"
-        subprocess.run(cmd.split())
-        self.start()
-
-
-
-
 class Container:
     def __init__(self, name, image):
         self.name = name
@@ -59,8 +28,7 @@ class Container:
 
     def reset(self):
         self.stop()
-        cmd = f"docker rm {self.name}"
-        subprocess.run(cmd.split())
+        time.sleep(2)
         self.start()
 
 
