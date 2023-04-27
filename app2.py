@@ -15,12 +15,15 @@ class Container:
         self.status = self.get_status()
         self.image = image
 
-    def get_status(self):
-        try:
-            container = client.containers.get(self.name)
-            return container.status
-        except docker.errors.NotFound:
-            return "Not started"
+    def get_status():
+        global containers
+        for container in containers.values():
+            try:
+                container_status = client.containers.get(container.name).status
+            except docker.errors.NotFound:
+                container_status = 'not found'
+            container.status = container_status
+
 
     def start(self):
         try:
@@ -110,19 +113,13 @@ def containers_status():
 @app.route('/')
 def index():
     global containers
-    containers_list = []
     for container in client.containers.list(all=True):
         if container.name not in containers:
             containers[container.name] = Container(
                 container.name, container.image.tags[0])
-        status = Container.get_status()
-        containers_list.append({
-            'name': container.name,
-            'image': container.image.tags[0],
-            'status': status,
-        })
-    print(containers_list)
-    return render_template('index.html', containers_list=containers_list)
+    get_status()
+    return render_template('index.html', containers_list=containers)
+
 
 
 
