@@ -20,7 +20,7 @@ class ContainerManager:
             self.containers[name] = Container(name, image)
             # else:
             #     self.containers[name].image = image
-        return self.containers
+
 
     def update_containers_thread(self):
         self.update_containers()
@@ -116,7 +116,7 @@ def update_containers_endpoint():
         containers_status[name] = {
             'status': container.status
         }
-    return redirect(url_for('index'))
+    return render_template('index.html', containers=containers_status, containers_list=container_manager.containers)
 
 
 
