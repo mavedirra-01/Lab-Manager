@@ -107,8 +107,9 @@ def containers_status():
     containers = client.containers.list()
     containers_status = {}
     for container in containers:
-        containers_status[container.name] = container.status
-    return containers_status
+        containers[container.name].get_status()
+        # containers_status[container.name] = container.status
+    #return containers_status
 
 
 @app.route('/')
