@@ -9,10 +9,6 @@ import time
 class ContainerManager:
     def __init__(self):
         self.containers = {}
-        # self.update_containers()
-        # # self.thread = Thread(target=self.update_containers_thread)
-        # # self.thread.daemon = True
-        # # self.thread.start()
 
 
     def update_containers(self):
@@ -35,7 +31,7 @@ class Container:
         self.image = image
 
     def get_status(self):
-        cmd = f"docker ps --format '{{{{.Status}}}}' -f name={self.name}"
+        cmd = f"docker ps -a --format '{{{{.Status}}}}' -f name={self.name}"
         try:
             output = subprocess.check_output(cmd, shell=True)
             if 'Exited' in output.decode():
@@ -46,7 +42,7 @@ class Container:
             return "Not started"
 
     def start(self):
-        cmd = f"docker run -d --rm --hostname {self.name} --name {self.name} {self.image}"
+        cmd = f"docker run -d --hostname {self.name} --name {self.name} {self.image}"
         subprocess.run(cmd.split())
 
     def stop(self):
