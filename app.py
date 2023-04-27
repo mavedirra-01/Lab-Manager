@@ -46,12 +46,9 @@ class Container:
     def start(self):
         cmd = f"docker run -d --hostname {self.name} --name {self.name} {self.image}"
         cmd_failed = f"docker start {self.name}"
-        try:
-            output = subprocess.check_output(cmd, shell=True)
-            subprocess.run(cmd.split())
-            if 'Conflict' in output.decode():
-                subprocess.run(cmd_failed.split())
-        except subprocess.CalledProcessError:
+        output = subprocess.check_output(cmd, shell=True)
+        subprocess.run(cmd.split())
+        if 'Conflict' in output.decode():
             subprocess.run(cmd_failed.split())
 
     def remove(self):
@@ -115,7 +112,7 @@ def update_containers_endpoint():
         containers_status[name] = {
             'status': container.status
         }
-    return jsonify(containers_status)
+    return redirect(url_for('index'))
 
 
 
