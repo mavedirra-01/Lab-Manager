@@ -76,7 +76,7 @@ class Container:
         time.sleep(2)
         self.start()
     
-    def get_containers():
+    def get_containers(self):
         output = subprocess.check_output(
             ['docker', 'ps', '-a', '--format', '{{.Names}} {{.Image}} {{.Status}}'])
         lines = output.decode('utf-8').strip().split('\n')
@@ -92,7 +92,6 @@ class Container:
 
 
 app = Flask(__name__)
-containers = Container.get_containers()
 
 # Define routes for starting, stopping, and resetting containers
 
@@ -150,7 +149,7 @@ def containers_status():
 @app.route('/')
 def index():
     containers_status = {}
-    for name, container in containers.items():
+    for name, container in containers():
         containers_status[name] = {
             'status': container.status
         }
