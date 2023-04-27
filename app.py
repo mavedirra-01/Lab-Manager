@@ -121,7 +121,7 @@ def containers_status():
         containers_status[name] = {
             'status': container.status
         }
-    return jsonify(containers_status)
+    return redirect(url_for('index'))
 
 
 @app.route('/')
