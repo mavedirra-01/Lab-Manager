@@ -17,7 +17,7 @@ class ContainerManager:
         for line in output.splitlines():
             name, image, status = line.split()
             # if name not in self.containers:
-            #     self.containers[name] = Container(name, image)
+            self.containers[name] = Container(name, image)
             # else:
             #     self.containers[name].image = image
 
