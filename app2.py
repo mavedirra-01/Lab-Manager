@@ -98,13 +98,13 @@ def terminal(container_name):
 
 
 @app.route('/containers_status')
-def get_containers_status():
-    global containers
+def containers_status():
+    containers = client.containers.list()
     containers_status = {}
-    for container_name, container in containers.items():
-        container.update_containers()
-        containers_status[container_name] = container.status
-    return json.dumps(containers_status)
+    for container in containers:
+        containers_status[container.name] = container.status
+    return containers_status
+
 
 
 @app.route('/')
