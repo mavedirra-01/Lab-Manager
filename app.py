@@ -15,7 +15,7 @@ class ContainerManager:
         self.thread.start()
 
     def update_containers(self):
-        cmd = "docker ps - a - -format '{{.Names}} {{.Image}} {{.Status}}' | awk '{print $1, $2, $3}'"
+        cmd = "docker ps -a --format '{{.Names}} {{.Image}} {{.Status}}' | awk '{print $1, $2, $3}'"
         output = subprocess.check_output(cmd, shell=True).decode('utf-8')
         for line in output.splitlines():
             name, image, status = line.split()
