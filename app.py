@@ -149,10 +149,11 @@ def containers_status():
 @app.route('/')
 def index():
     containers_status = {}
-    for name, container in containers():
-        containers_status[name] = {
-            'status': container.status
+    for container in containers:
+        containers_status[container['name']] = {
+            'status': container['status']
         }
+
     return render_template('index.html', containers=containers_status, containers_list=containers)
 
 
