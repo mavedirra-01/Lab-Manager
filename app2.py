@@ -106,6 +106,14 @@ def terminal(container_name):
 def containers_status():
     containers = client.containers.list()
     containers_status = {}
+    for container in containers:
+        containers_status[container.name] = container.status
+    return containers_status
+
+
+@app.route('/')
+def index():
+    global containers
     for container in client.containers.list(all=True):
         if container.name not in containers:
             containers[container.name] = Container(
@@ -113,12 +121,6 @@ def containers_status():
             containers[container.name].get_status()
         else:
             containers[container.name].get_status()
-
-
-@app.route('/')
-def index():
-    global containers
-
     return render_template('index.html', containers_list=containers.values())
 
 
