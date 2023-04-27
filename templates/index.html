@@ -86,54 +86,60 @@
         });
     </script> -->
 
-    <main class="container my-5">
-        <h2 class="mb-4">Docker Containers</h2>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Image</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                    <th>Connect</th>
-                </tr>
-            </thead>
-            <tbody id="table-body">
-                {% for container in containers_list %}
-                <tr data-container-name="{{ container.name }}">
-                    <td>{{ container.name }}</td>
-                    <td>{{ container.image }}</td>
-                    <td class="status">{{ container.status }}</td>
-                    <td>
-                        <form action="{{ url_for('start_container', container_name=container.name) }}" method="POST">
-                            <button id="start-button" class="btn btn-success start-button"
-                                data-container-name="{{ container.name }}">Start</button>
-                        </form>
-                        <form action="{{ url_for('stop_container', container_name=container.name) }}" method="POST">
-                            <button id="stop-button" class="btn btn-danger stop-button" data-container-name="{{ container.name }}">Stop</button>
-                        </form>
-                        <form action="{{ url_for('reset_container', container_name=container.name) }}" method="POST">
-                            <button id="reset-button" class="btn btn-warning reset-button"
-                                data-container-name="{{ container.name }}">Reset</button>
-                        </form>
+<main class="container my-5">
+    <h2 class="mb-4">Docker Containers</h2>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Image</th>
+                <th>Status</th>
+                <th>Action</th>
+                <th>Connect</th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+            {% for container in containers_list %}
+            <tr data-container-name="{{ container.name }}">
+                <td>{{ container.name }}</td>
+                <td>{{ container.image }}</td>
+                <td class="status">{{ container.status }}</td>
+                <td>
+                    <form action="{{ url_for('start_container', container_name=container.name) }}" method="POST">
+                        <button id="start-button" class="btn btn-success start-button"
+                            data-container-name="{{ container.name }}">Start</button>
+                    </form>
+                    <form action="{{ url_for('stop_container', container_name=container.name) }}" method="POST">
+                        <button id="stop-button" class="btn btn-danger stop-button"
+                            data-container-name="{{ container.name }}">Stop</button>
+                    </form>
+                    <form action="{{ url_for('reset_container', container_name=container.name) }}" method="POST">
+                        <button id="reset-button" class="btn btn-warning reset-button"
+                            data-container-name="{{ container.name }}">Reset</button>
+                    </form>
 
-                    </td>
-                    <td>
-                        <form action="{{ url_for('terminal', container_name=container.name) }}" method="POST">
-                            <button id="terminal-button" class="btn btn-primary terminal-button"
-                                data-container="{{ container.name }}">Terminal</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-                {% if not containers_list %}
-                <tr>
-                    <td colspan="5" class="text-center">No containers found</td>
-                </tr>
-                {% endif %}
-            </tbody>
-        </table>
-    </main>
+                </td>
+                <td>
+                    {% if container.status == 'running' %}
+                    <form action="{{ url_for('terminal', container_name=container.name) }}" method="POST">
+                        <button id="terminal-button" class="btn btn-primary terminal-button"
+                            data-container="{{ container.name }}">Terminal</button>
+                    </form>
+                    {% else %}
+                    <button class="btn btn-secondary disabled">Terminal</button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+            {% if not containers_list %}
+            <tr>
+                <td colspan="5" class="text-center">No containers found</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</main>
+
 
 
 
