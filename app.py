@@ -107,7 +107,6 @@ def terminal(container_name):
 @app.route('/update-containers')
 def update_containers_endpoint():
     container_manager.update_containers_thread()
-    containers_status = Container.get_status()
     for name, container in container_manager.containers.items():
         containers_status[name] = {
             'status': container.status
