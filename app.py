@@ -36,6 +36,8 @@ class Container:
             output = subprocess.check_output(cmd, shell=True)
             if 'Exited' in output.decode():
                 return "Exited"
+            if not output.decode():
+                return "Not Started"
             else:
                 return "Running"
         except subprocess.CalledProcessError:
