@@ -199,9 +199,13 @@
                 </td>
                 <td>
                     {% if container.status == 'running' %}
+                
                     <form action="{{ url_for('terminal', container_name=container.name) }}" method="POST" target="_blank">
                         <button id="terminal-button-{{ container.name }}" class="btn btn-primary terminal-button"
                             data-container="{{ container.name }}">Terminal</button>
+                    </form>
+                    <form method="POST" target="_blank">
+                        <a href="http://{{ container.name }}:{{ container.port }}" class="btn btn-primary">Webpage</a>
                     </form>
                     {% else %}
                     <button class="btn btn-secondary disabled">Terminal</button>
